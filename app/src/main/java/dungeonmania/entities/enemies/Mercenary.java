@@ -1,8 +1,5 @@
 package dungeonmania.entities.enemies;
 
-import java.util.List;
-import java.util.Random;
-
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.Entity;
@@ -14,7 +11,6 @@ import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.InvisibilityPotion;
 import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.map.GameMap;
-import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Mercenary extends Enemy implements Interactable, PotionListener {
@@ -33,6 +29,9 @@ public class Mercenary extends Enemy implements Interactable, PotionListener {
 
     /** Type of movement to use */
     private String movementType = "hostile";
+    private DoMovement movementStrategy = new DoMovement();
+
+    // private MoveStrategy movementStrategy = new FollowPlayerStrategy();
 
     public Mercenary(Position position, double health, double attack, int bribeAmount, int bribeRadius,
             double allyAttack, double allyDefence) {
@@ -100,52 +99,58 @@ public class Mercenary extends Enemy implements Interactable, PotionListener {
             break;
         case "invisible":
             // Move random
-            Random randGen = new Random();
-            List<Position> pos = getPosition().getCardinallyAdjacentPositions();
-            pos = pos.stream().filter(p -> map.canMoveTo(this, p)).toList();
-            if (pos.size() == 0) {
-                nextPos = getPosition();
-                map.moveTo(this, nextPos);
-            } else {
-                nextPos = pos.get(randGen.nextInt(pos.size()));
-                map.moveTo(this, nextPos);
-            }
+            // Random randGen = new Random();
+            // List<Position> pos = getPosition().getCardinallyAdjacentPositions();
+            // pos = pos.stream().filter(p -> map.canMoveTo(this, p)).toList();
+            // if (pos.size() == 0) {
+            //     nextPos = getPosition();
+            //     map.moveTo(this, nextPos);
+            // } else {
+            //     nextPos = pos.get(randGen.nextInt(pos.size()));
+            //     map.moveTo(this, nextPos);
+            // }
+            movementStrategy.setStrategy(new RandomMovement());
+            nextPos = movementStrategy.executeMovement(this, game);
             break;
         case "invincible":
             // Check whether the mercenary should flee left or right & up or down
-            Position plrDiff = Position.calculatePositionBetween(map.getPlayer().getPosition(), getPosition());
-            Position moveX = (plrDiff.getX() >= 0) ? Position.translateBy(getPosition(), Direction.RIGHT)
-                    : Position.translateBy(getPosition(), Direction.LEFT);
-            Position moveY = (plrDiff.getY() >= 0) ? Position.translateBy(getPosition(), Direction.DOWN)
-                    : Position.translateBy(getPosition(), Direction.UP);
-            Position offset = getPosition();
-            // If on the same Y axis and can flee left or right, do so.
-            if (plrDiff.getY() == 0 && map.canMoveTo(this, moveX))
-                offset = moveX;
-            // Or if on the same X axis and can flee up or down, do so.
-            else if (plrDiff.getX() == 0 && map.canMoveTo(this, moveY))
-                offset = moveY;
-            // Prioritise Y movement if further away on the X axis
-            else if (Math.abs(plrDiff.getX()) >= Math.abs(plrDiff.getY())) {
-                if (map.canMoveTo(this, moveY))
-                    offset = moveY;
-                else if (map.canMoveTo(this, moveX))
-                    offset = moveX;
-                else
-                    offset = getPosition();
-                // Prioritise X movement if further away on the Y axis
-            } else {
-                if (map.canMoveTo(this, moveX))
-                    offset = moveX;
-                else if (map.canMoveTo(this, moveY))
-                    offset = moveY;
-                else
-                    offset = getPosition();
-            }
-            nextPos = offset;
+            // Position plrDiff = Position.calculatePositionBetween(map.getPlayer().getPosition(), getPosition());
+            // Position moveX = (plrDiff.getX() >= 0) ? Position.translateBy(getPosition(), Direction.RIGHT)
+            //         : Position.translateBy(getPosition(), Direction.LEFT);
+            // Position moveY = (plrDiff.getY() >= 0) ? Position.translateBy(getPosition(), Direction.DOWN)
+            //         : Position.translateBy(getPosition(), Direction.UP);
+            // Position offset = getPosition();
+            // // If on the same Y axis and can flee left or right, do so.
+            // if (plrDiff.getY() == 0 && map.canMoveTo(this, moveX))
+            //     offset = moveX;
+            // // Or if on the same X axis and can flee up or down, do so.
+            // else if (plrDiff.getX() == 0 && map.canMoveTo(this, moveY))
+            //     offset = moveY;
+            // // Prioritise Y movement if further away on the X axis
+            // else if (Math.abs(plrDiff.getX()) >= Math.abs(plrDiff.getY())) {
+            //     if (map.canMoveTo(this, moveY))
+            //         offset = moveY;
+            //     else if (map.canMoveTo(this, moveX))
+            //         offset = moveX;
+            //     else
+            //         offset = getPosition();
+            //     // Prioritise X movement if further away on the Y axis
+            // } else {
+            //     if (map.canMoveTo(this, moveX))
+            //         offset = moveX;
+            //     else if (map.canMoveTo(this, moveY))
+            //         offset = moveY;
+            //     else
+            //         offset = getPosition();
+            // }
+            // nextPos = getFleePosition(map, getPosition());
+            movementStrategy.setStrategy(new FleeMovement());
+            nextPos = movementStrategy.executeMovement(this, game);
             break;
         case "hostile":
-            nextPos = map.dijkstraPathFind(getPosition(), player.getPosition(), this);
+            // nextPos = map.dijkstraPathFind(getPosition(), player.getPosition(), this);
+            movementStrategy.setStrategy(new DijkstraMovement());
+            nextPos = movementStrategy.executeMovement(this, game);
             break;
         default:
             break;
