@@ -8,7 +8,7 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.Player;
 import dungeonmania.goals.Goal;
-import dungeonmania.goals.GoalFactory;
+import dungeonmania.goals.GoalFactoryRegistry;
 import dungeonmania.map.GameMap;
 import dungeonmania.map.MapTile;
 import dungeonmania.map.MapTileFactory;
@@ -93,7 +93,7 @@ public class GameBuilder {
 
     public void buildGoals(Game game) {
         if (!dungeon.isNull("goal-condition")) {
-            Goal goal = GoalFactory.createGoal(dungeon.getJSONObject("goal-condition"), config);
+            Goal goal = GoalFactoryRegistry.create(dungeon.getJSONObject("goal-condition"), config);
             game.setGoals(goal);
         }
     }

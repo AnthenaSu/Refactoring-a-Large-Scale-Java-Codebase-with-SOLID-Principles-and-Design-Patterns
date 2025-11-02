@@ -31,7 +31,7 @@ Step 4: The concrete strategy executes its algorithm. Depending on which strateg
 
 ### b) Inheritance Design (6 marks)
 
-[Links to your merge requests](/put/links/here)
+[Links to your merge requests](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/2)
 
 > i. List one design principle that is violated by collectable objects based on the description above. Briefly justify your answer.
 
@@ -53,10 +53,22 @@ Moreover, in the battle() method within BattleFacade, the loop originally iterat
 > i. Do you think the design is of good quality here? Do you think it complies with the open-closed principle? Do you think the design should be changed?
 
 [Answer]
+This code works functionally, but it has poor quality as it does not follow good design principles, especially Open–Closed Principle (OCP) and Single Responsibility Principle (SRP).
+OCP says "classes should be open for extension, but closed for modification.” In this design, every time a new goal type (e.g. "defeatEnemies", "collectKeys") is added, you must:
+    1. Edit the switch in Goal.achieved()
+    2. Edit the switch in Goal.toString()
+    3. Edit the switch in GoalFactory.createGoal()
+That means the code is not closed for modification. Adding a new goal requires editing existing classes.
+Moreover, the Goal class currently stores goal data, handles goal logi (checking completion), and Handles string formatting for display. It’s doing too many things
 
 > ii. If you think the design is sufficient as it is, justify your decision. If you think the answer is no, pick a suitable Design Pattern that would improve the quality of the code and refactor the code accordingly.
 
-[Briefly explain what you did]
+Factory Method Pattern.
+Since there are five distinct goal types, we defined an interface called GoalFactory containing a single method createGoal(). Each goal type (e.g., AND, OR, exit, boulders, treasure) has its own concrete factory class that implements GoalFactory and overrides the createGoal() method to construct the corresponding goal object.
+
+We also created a GoalFactoryRegistry class that serves as a central coordinator. It maintains a mapping between goal type strings and their respective factory instances, allowing the system to distinguish and call the correct factory based on the goal type specified in the JSON configuration.
+
+Finally, the buildGoals() method inside GameBuilder was updated to call GoalFactoryRegistry.create(...) instead of the original GoalFactory.createGoal(...). 
 
 ### d) Open Refactoring (12 marks)
 
