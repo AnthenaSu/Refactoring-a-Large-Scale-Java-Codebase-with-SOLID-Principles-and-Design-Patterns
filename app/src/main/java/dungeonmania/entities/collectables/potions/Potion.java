@@ -3,11 +3,11 @@ package dungeonmania.entities.collectables.potions;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
-import dungeonmania.entities.inventory.InventoryItem;
+import dungeonmania.entities.inventory.InventoryBattle;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public abstract class Potion extends InventoryItem {
+public abstract class Potion extends InventoryBattle {
     private int duration;
 
     public Potion(Position position, int duration) {

@@ -3,11 +3,11 @@ package dungeonmania.entities.collectables;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
-import dungeonmania.entities.inventory.InventoryItem;
+import dungeonmania.entities.inventory.InventoryBattle;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public class Key extends InventoryItem {
+public class Key extends InventoryBattle {
     private int number;
 
     public Key(Position position, int number) {

@@ -4,7 +4,7 @@
 
 ### a) From DRY to Design Patterns (6 marks)
 
-[Links to your merge requests](/put/links/here)
+[Links to your merge requests](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/1)
 
 > i. Look inside src/main/java/dungeonmania/entities/enemies. Where can you notice an instance of repeated code? Note down the particular offending lines/methods/fields.
 
@@ -36,10 +36,15 @@ Step 4: The concrete strategy executes its algorithm. Depending on which strateg
 > i. List one design principle that is violated by collectable objects based on the description above. Briefly justify your answer.
 
 [Answer]
+Liskov Substitution Principle (LSP) is violated.
+Before refactoring, the abstract class InventoryItem declared methods such as applyBuff() and getDurability(), which are only relevant to battle-related items. Non-battle collectables like Wood, Treasure, or Bomb were still forced to override these methods even though they did not logically require them. This breaks the LSP, since not all subclasses of InventoryItem can be substituted for their parent without changing the program’s intended behaviour.
 
 > ii. Refactor the inheritance structure of the code, and in the process remove the design principle violation you identified.
 
-[Briefly explain what you did]
+To restore proper inheritance and satisfy LSP, the hierarchy was refactored by introducing a new abstract class InventoryBattle that extends InventoryItem.
+    - Battle-related items (e.g. Sword, Shield, Potion) extend InventoryBattle, which defines applyBuff() and getDurability().
+    - Non-battle collectables (e.g. Wood, Treasure, Bomb) simply extend InventoryItem, which now only handles collection behaviour and no longer enforces irrelevant methods.
+Moreover, in the battle() method within BattleFacade, the loop originally iterating over all InventoryItem objects was updated to only process instances of InventoryBattle. This ensures that only battle-capable items contribute to combat logic while preserving a clean, logically consistent inheritance structure.
 
 ### c) Open-Closed Goals (6 marks)
 

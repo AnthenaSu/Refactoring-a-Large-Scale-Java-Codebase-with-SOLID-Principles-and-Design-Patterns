@@ -7,12 +7,14 @@ import java.util.stream.Collectors;
 import dungeonmania.Game;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
-import dungeonmania.entities.buildables.*;
+import dungeonmania.entities.buildables.Bow;
+import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.collectables.Sword;
 import dungeonmania.entities.collectables.Useable;
 import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.Enemy;
 import dungeonmania.entities.enemies.Mercenary;
+import dungeonmania.entities.inventory.InventoryBattle;
 import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.ResponseBuilder;
@@ -31,13 +33,14 @@ public class BattleFacade {
 
         // 1. get and apply buff to player, using any relevant potions, inventory items and allies
         List<InventoryItem> battleItems = new ArrayList<>();
+
         BattleStatistics playerBuff = new BattleStatistics(0, 0, 0, 1, 1);
 
         Potion effectivePotion = player.getEffectivePotion();
         if (effectivePotion != null) {
             playerBuff = player.applyBuff(playerBuff);
         } else {
-            for (InventoryItem item : player.getInventory().getEntities(InventoryItem.class)) {
+            for (InventoryBattle item : player.getInventory().getEntities(InventoryBattle.class)) {
                 if (item instanceof Bow || item instanceof Shield || item instanceof Sword || item instanceof Potion) {
                     playerBuff = item.applyBuff(playerBuff);
                     battleItems.add(item);
