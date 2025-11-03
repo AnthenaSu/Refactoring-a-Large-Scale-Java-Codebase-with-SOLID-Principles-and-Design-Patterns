@@ -16,7 +16,7 @@ In ZombieToast case "runAway" (line 41-71) is exactly same as Mercenary case "in
 [Answer]
 The Strategy Pattern addresses this issue of repetition by encapsulating algorithms (movement behaviours) into separate, interchangeable classes. 
 Inside src/main/java/dungeonmania/entities/enemies, each enemy has its own movement and their logics are hard-coded, making the program harder to maintain or extend.
-Therefore, we can use strategy patterns to do "move" in a lot of different ways and extract all of these algorithms into separate classes. 
+Therefore, I can use strategy patterns to do "move" in a lot of different ways and extract all of these algorithms into separate classes. 
 
 > iii. Using your chosen Design Pattern, refactor the code to remove the repetition.
 
@@ -64,9 +64,9 @@ Moreover, the Goal class currently stores goal data, handles goal logi (checking
 > ii. If you think the design is sufficient as it is, justify your decision. If you think the answer is no, pick a suitable Design Pattern that would improve the quality of the code and refactor the code accordingly.
 
 Factory Method Pattern.
-Since there are five distinct goal types, we defined an interface called GoalFactory containing a single method createGoal(). Each goal type (e.g., AND, OR, exit, boulders, treasure) has its own concrete factory class that implements GoalFactory and overrides the createGoal() method to construct the corresponding goal object.
+Since there are five distinct goal types, I defined an interface called GoalFactory containing a single method createGoal(). Each goal type (e.g., AND, OR, exit, boulders, treasure) has its own concrete factory class that implements GoalFactory and overrides the createGoal() method to construct the corresponding goal object.
 
-We also created a GoalFactoryRegistry class that serves as a central coordinator. It maintains a mapping between goal type strings and their respective factory instances, allowing the system to distinguish and call the correct factory based on the goal type specified in the JSON configuration.
+I also created a GoalFactoryRegistry class that serves as a central coordinator. It maintains a mapping between goal type strings and their respective factory instances, allowing the system to distinguish and call the correct factory based on the goal type specified in the JSON configuration.
 
 Finally, the buildGoals() method inside GameBuilder was updated to call GoalFactoryRegistry.create(...) instead of the original GoalFactory.createGoal(...). 
 
@@ -112,12 +112,22 @@ Previously, the Entity superclass declared methods such as onMovedAway() and onD
     }
 This violated the Liskov Substitution Principle (LSP) because subclasses were forced to provide meaningless or empty implementations of methods that did not apply to their behaviour.
 
-To refactor, we removed unnecessary overrides from unrelated subclasses (e.g. those returning immediately in onMovedAway() and onDestroy()). Then, we updated the GameMap.destroyEntity() method to safely call onDestroy() only when the entity is an instance of Enemy.
+To refactor, I removed unnecessary overrides from unrelated subclasses (e.g. those returning immediately in onMovedAway() and onDestroy()). Then, I updated the GameMap.destroyEntity() method to safely call onDestroy() only when the entity is an instance of Enemy.
 
 As a reuslt, subclasses are no longer required to override irrelevant methods. Each entity type now correctly represents its behaviour without empty or redundant method bodies.
 
-[Merge Request 3] (link)
+[Merge Request 3](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/7)
 Added @SuppressWarnings("removal") above calls to Entity.translate(...) to silence compiler warnings. 
+
+
+
+[Merge Request 4](link)
+
+In the original implementation, the constructEntity() method in EntityFactory relied on a long switch statement to determine which type of entity to create. Each case explicitly handled the construction logic for different entities such as Player, Wall, Bomb, Door, and so on. While this approach worked functionally, it violated the Open–Closed Principle of object-oriented design. Every time a new entity type needed to be added or an existing creation logic modified, developers were required to open and modify this switch statement, making the code difficult to maintain and prone to errors.
+
+To address this issue, I refactored the design by introducing a Factory Pattern using an EntityBuilder interface and individual factory classes for each entity type. Instead of hardcoding every creation rule inside one large method, each entity now has its own dedicated factory class (e.g., BombFactory, PortalFactory, DoorFactory, etc.) inside the file EntityFactories responsible for creating that entity based on the given JSON data and configuration file. 
+
+This change not only satisfies the Open–Closed Principle but also greatly improves Single Responsibility. Since each entity’s creation logic now resides in its own dedicated factory class, the EntityFactory class itself no longer contains entity-specific logic or numerous buildXYZ() methods.
 
 
 
