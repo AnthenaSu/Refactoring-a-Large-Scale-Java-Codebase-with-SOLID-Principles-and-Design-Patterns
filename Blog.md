@@ -72,7 +72,7 @@ Finally, the buildGoals() method inside GameBuilder was updated to call GoalFact
 
 ### d) Open Refactoring (12 marks)
 
-[Merge Request 1](/put/links/here)
+[Merge Request 1](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/5)
 
 Law of Demeter
 
@@ -99,7 +99,22 @@ These changes ensure that classes interact only with their immediate collaborato
 
 [Merge Request 2](/put/links/here)
 
-[Briefly explain what you did]
+Liskov Substitution Principle (LSP)
+
+Previously, the Entity superclass declared methods such as onMovedAway() and onDestroy() that were inherited by all subclasses, even though only specific entity types (like Switch and Enemy) needed them. For exmpale:
+    @Override
+    public void onMovedAway(GameMap map, Entity entity) {
+        return;
+    }
+    @Override
+    public void onDestroy(GameMap gameMap) {
+        return;
+    }
+This violated the Liskov Substitution Principle (LSP) because subclasses were forced to provide meaningless or empty implementations of methods that did not apply to their behaviour.
+
+To refactor, we removed unnecessary overrides from unrelated subclasses (e.g. those returning immediately in onMovedAway() and onDestroy()). Then, we updated the GameMap.destroyEntity() method to safely call onDestroy() only when the entity is an instance of Enemy.
+
+As a reuslt, subclasses are no longer required to override irrelevant methods. Each entity type now correctly represents its behaviour without empty or redundant method bodies.
 
 
 ## Task 2) Evolution of Requirements 🔧

@@ -17,18 +17,8 @@ public abstract class InventoryItem extends Entity {
         return true;
     }
 
-    @Override
-    public abstract void onOverlap(GameMap map, Entity entity);
-
-    @Override
-    public void onMovedAway(GameMap map, Entity entity) {
-        return;
-    }
-
-    @Override
-    public void onDestroy(GameMap gameMap) {
-        return;
-    }
+    // @Override
+    // public abstract void onOverlap(GameMap map, Entity entity);
 
     /**
      * Use this inventory item to apply a buff to the player's battle statistics (eg having a sword increases the

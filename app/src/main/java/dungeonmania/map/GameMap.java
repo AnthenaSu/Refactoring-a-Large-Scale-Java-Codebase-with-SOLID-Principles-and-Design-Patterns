@@ -143,8 +143,10 @@ public class GameMap {
     private void triggerMovingAwayEvent(Entity entity) {
         List<Runnable> callbacks = new ArrayList<>();
         getEntities(entity.getPosition()).forEach(e -> {
-            if (e != entity)
-                callbacks.add(() -> e.onMovedAway(this, entity));
+            if (e != entity && e instanceof Switch) {
+                Switch s = (Switch) e;
+                callbacks.add(() -> s.onMovedAway(this, entity));
+            }
         });
         callbacks.forEach(callback -> {
             callback.run();
@@ -257,7 +259,10 @@ public class GameMap {
     /** Destroy an entity from the game map */
     public void destroyEntity(Entity entity) {
         removeNode(entity);
-        entity.onDestroy(this);
+        if (entity instanceof Enemy) {
+            Enemy other = (Enemy) entity;
+            other.onDestroy(this);
+        }
     }
 
     /**

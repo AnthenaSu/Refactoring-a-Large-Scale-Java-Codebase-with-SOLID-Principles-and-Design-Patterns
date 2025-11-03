@@ -1,10 +1,10 @@
 package dungeonmania.entities;
 
+import java.util.UUID;
+
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
-
-import java.util.UUID;
 
 /**
  * Entity: the base type for "things" within the game. Everything is an entity, from the player to the monsters to the
@@ -78,11 +78,12 @@ public abstract class Entity {
      */
     public abstract void onOverlap(GameMap map, Entity entity);
 
-    /** Called whenever another entity moves away from this entity's position */
-    public abstract void onMovedAway(GameMap map, Entity entity);
+    // /** Called whenever another entity moves away from this entity's position */
+    // public abstract void onMovedAway(GameMap map, Entity entity);
 
     /** Called when this entity is destroyed (ie removed from the game map). */
-    public abstract void onDestroy(GameMap gameMap);
+    // public abstract void onDestroy(GameMap gameMap);
+
 
     /** Current position of the entity */
     public Position getPosition() {
