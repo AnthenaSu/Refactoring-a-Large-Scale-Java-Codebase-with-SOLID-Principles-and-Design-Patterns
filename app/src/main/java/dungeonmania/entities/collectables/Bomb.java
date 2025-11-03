@@ -1,15 +1,13 @@
 package dungeonmania.entities.collectables;
 
-import dungeonmania.util.Position;
-
 import java.util.List;
 
-// import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.Switch;
 import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.map.GameMap;
+import dungeonmania.util.Position;
 
 public class Bomb extends InventoryItem {
     public enum State {
@@ -41,6 +39,7 @@ public class Bomb extends InventoryItem {
         return radius;
     }
 
+    @SuppressWarnings("removal")
     public void onPutDown(GameMap map, Position p) {
         translate(Position.calculatePositionBetween(getPosition(), p));
         map.addEntity(this);

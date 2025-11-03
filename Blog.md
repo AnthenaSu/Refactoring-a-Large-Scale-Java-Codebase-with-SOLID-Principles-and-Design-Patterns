@@ -97,7 +97,7 @@ Since there are multiple Law of Demeter violations, I created several new helper
 
 These changes ensure that classes interact only with their immediate collaborators (e.g. Player, GameMap, Game) rather than navigating through multiple object layers.
 
-[Merge Request 2](/put/links/here)
+[Merge Request 2](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/6)
 
 Liskov Substitution Principle (LSP)
 
@@ -115,6 +115,10 @@ This violated the Liskov Substitution Principle (LSP) because subclasses were fo
 To refactor, we removed unnecessary overrides from unrelated subclasses (e.g. those returning immediately in onMovedAway() and onDestroy()). Then, we updated the GameMap.destroyEntity() method to safely call onDestroy() only when the entity is an instance of Enemy.
 
 As a reuslt, subclasses are no longer required to override irrelevant methods. Each entity type now correctly represents its behaviour without empty or redundant method bodies.
+
+[Merge Request 3] (link)
+Added @SuppressWarnings("removal") above calls to Entity.translate(...) to silence compiler warnings. 
+
 
 
 ## Task 2) Evolution of Requirements 🔧

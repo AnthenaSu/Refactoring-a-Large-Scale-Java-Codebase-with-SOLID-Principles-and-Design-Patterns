@@ -123,6 +123,7 @@ public class GameMap {
         triggerOverlapEvent(entity);
     }
 
+    @SuppressWarnings("removal")
     /** Move an entity in a given direction */
     public void moveTo(Entity entity, Direction direction) {
         if (!canMoveTo(entity, Position.translateBy(entity.getPosition(), direction)))

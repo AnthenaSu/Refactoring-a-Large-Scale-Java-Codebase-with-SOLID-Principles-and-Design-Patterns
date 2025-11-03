@@ -14,8 +14,7 @@ public class Boulder extends Entity {
     @Override
     public boolean canMoveOnto(GameMap map, Entity entity) {
         if (entity instanceof Spider) return false;
-        if (entity instanceof Player && canPush(map, entity.getFacing())) return true;
-        return false;
+        return entity instanceof Player && canPush(map, entity.getFacing());
     }
 
     @Override

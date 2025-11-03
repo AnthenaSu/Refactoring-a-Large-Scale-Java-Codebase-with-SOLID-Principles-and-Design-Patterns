@@ -26,47 +26,9 @@ public class ZombieToast extends Enemy implements PotionListener {
         // GameMap map = game.getMap();
         switch (movementType) {
         case "random":
-            // List<Position> pos = getPosition().getCardinallyAdjacentPositions();
-            // pos = pos.stream().filter(p -> map.canMoveTo(this, p)).toList();
-            // if (pos.size() == 0) {
-            //     nextPos = getPosition();
-            // } else {
-            //     nextPos = pos.get(randGen.nextInt(pos.size()));
-            // }
             movementStrategy.setStrategy(new RandomMovement());
             break;
         case "runAway":
-            // Check whether the zombie should flee left or right & up or down
-            // Position plrDiff = Position.calculatePositionBetween(map.getPlayer().getPosition(), getPosition());
-            // Position moveX = (plrDiff.getX() >= 0) ? Position.translateBy(getPosition(), Direction.RIGHT)
-            //         : Position.translateBy(getPosition(), Direction.LEFT);
-            // Position moveY = (plrDiff.getY() >= 0) ? Position.translateBy(getPosition(), Direction.DOWN)
-            //         : Position.translateBy(getPosition(), Direction.UP);
-            // Position offset = getPosition();
-            // // If on the same Y axis and can flee left or right, do so.
-            // if (plrDiff.getY() == 0 && map.canMoveTo(this, moveX))
-            //     offset = moveX;
-            // // Or if on the same X axis and can flee up or down, do so.
-            // else if (plrDiff.getX() == 0 && map.canMoveTo(this, moveY))
-            //     offset = moveY;
-            // // Prioritise Y movement if further away on the X axis
-            // else if (Math.abs(plrDiff.getX()) >= Math.abs(plrDiff.getY())) {
-            //     if (map.canMoveTo(this, moveY))
-            //         offset = moveY;
-            //     else if (map.canMoveTo(this, moveX))
-            //         offset = moveX;
-            //     else
-            //         offset = getPosition();
-            //     // Prioritise X movement if further away on the Y axis
-            // } else {
-            //     if (map.canMoveTo(this, moveX))
-            //         offset = moveX;
-            //     else if (map.canMoveTo(this, moveY))
-            //         offset = moveY;
-            //     else
-            //         offset = getPosition();
-            // }
-            // nextPos = getFleePosition(map, getPosition());
             movementStrategy.setStrategy(new FleeMovement());
             break;
         default:
