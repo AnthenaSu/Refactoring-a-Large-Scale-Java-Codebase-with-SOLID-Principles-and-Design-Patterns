@@ -10,6 +10,6 @@ public class GoalAndFactory implements GoalFactory {
         JSONArray subgoals = jsonGoal.getJSONArray("subgoals");
         Goal goal1 = GoalFactoryRegistry.create(subgoals.getJSONObject(0), config);
         Goal goal2 = GoalFactoryRegistry.create(subgoals.getJSONObject(1), config);
-        return new Goal("AND", goal1, goal2);
+        return new AndGoal(goal1, goal2);
     }
 }

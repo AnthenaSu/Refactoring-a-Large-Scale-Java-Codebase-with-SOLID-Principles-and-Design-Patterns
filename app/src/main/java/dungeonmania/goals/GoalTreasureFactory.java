@@ -7,6 +7,6 @@ public class GoalTreasureFactory implements GoalFactory {
     @Override
     public Goal createGoal(JSONObject jsonGoal, JSONObject config) {
         int treasureGoal = config.optInt("treasure_goal", 1);
-        return new Goal("treasure", treasureGoal);
+        return new TreasureGoal(treasureGoal);
     }
 }
