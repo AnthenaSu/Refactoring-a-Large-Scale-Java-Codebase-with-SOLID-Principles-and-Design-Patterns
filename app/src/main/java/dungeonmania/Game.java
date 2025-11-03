@@ -12,9 +12,11 @@ import dungeonmania.entities.Player;
 import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.Enemy;
+import dungeonmania.entities.enemies.Mercenary;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.goals.Goal;
 import dungeonmania.map.GameMap;
+import dungeonmania.response.models.BattleResponse;
 import dungeonmania.util.Direction;
 
 public class Game {
@@ -54,10 +56,10 @@ public class Game {
 
     public void battle(Player player, Enemy enemy) {
         battleFacade.battle(this, player, enemy);
-        if (player.getBattleStatistics().getHealth() <= 0) {
+        if (player.getHealth() <= 0) {
             map.destroyEntity(player);
         }
-        if (enemy.getBattleStatistics().getHealth() <= 0) {
+        if (enemy.getHealth() <= 0) {
             map.destroyEntity(enemy);
         }
     }
@@ -271,5 +273,26 @@ public class Game {
 
     public BattleFacade getBattleFacade() {
         return battleFacade;
+    }
+
+    // my methods
+    public List<Mercenary> getMercenaryList() {
+        return map.getEntities(Mercenary.class);
+    }
+
+    public List<Entity> getEntities() {
+        return map.getEntities();
+    }
+
+    public List<BattleResponse> getBattleResponses() {
+        return battleFacade.getBattleResponses();
+    }
+
+    public boolean achieved(Game game) {
+        return goals.achieved(game);
+    }
+
+    public List<String> getBuildables() {
+        return player.getBuildables();
     }
 }

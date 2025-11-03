@@ -1,10 +1,10 @@
 package dungeonmania.entities;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
-import java.util.HashSet;
 
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.battles.Battleable;
@@ -17,6 +17,7 @@ import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.Enemy;
 import dungeonmania.entities.enemies.Mercenary;
 import dungeonmania.entities.inventory.Inventory;
+import dungeonmania.entities.inventory.InventoryBattle;
 import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
@@ -203,5 +204,18 @@ public class Player extends Entity implements Battleable {
 
     public void removePotionListener(PotionListener e) {
         potionListeners.remove(e);
+    }
+
+    // my methods
+    public double getHealth() {
+        return battleStatistics.getHealth();
+    }
+
+    public List<InventoryBattle> getBattleItemsList() {
+        return inventory.getEntities(InventoryBattle.class);
+    }
+
+    public <T extends InventoryItem> int count(Class<T> itemType) {
+        return inventory.count(itemType);
     }
 }

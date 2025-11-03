@@ -18,7 +18,7 @@ public class Key extends InventoryBattle {
     @Override
     public void onOverlap(GameMap map, Entity entity) {
         if (entity instanceof Player player) {
-            if (player.getInventory().count(Key.class) >= 1) {
+            if (player.count(Key.class) >= 1) {
                 return;
             } else if (!player.pickUp(this)) {
                 return;

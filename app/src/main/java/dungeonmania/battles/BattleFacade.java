@@ -27,8 +27,8 @@ public class BattleFacade {
     /** Battle the player against the given enemy */
     public void battle(Game game, Player player, Enemy enemy) {
         // 0. init
-        double initialPlayerHealth = player.getBattleStatistics().getHealth();
-        double initialEnemyHealth = enemy.getBattleStatistics().getHealth();
+        double initialPlayerHealth = player.getHealth();
+        double initialEnemyHealth = enemy.getHealth();
         String enemyString = NameConverter.toSnakeCase(enemy);
 
         // 1. get and apply buff to player, using any relevant potions, inventory items and allies
@@ -40,7 +40,7 @@ public class BattleFacade {
         if (effectivePotion != null) {
             playerBuff = player.applyBuff(playerBuff);
         } else {
-            for (InventoryBattle item : player.getInventory().getEntities(InventoryBattle.class)) {
+            for (InventoryBattle item : player.getBattleItemsList()) {
                 if (item instanceof Bow || item instanceof Shield || item instanceof Sword || item instanceof Potion) {
                     playerBuff = item.applyBuff(playerBuff);
                     battleItems.add(item);
@@ -49,7 +49,7 @@ public class BattleFacade {
             }
         }
 
-        List<Mercenary> mercs = game.getMap().getEntities(Mercenary.class);
+        List<Mercenary> mercs = game.getMercenaryList();
         for (Mercenary merc : mercs) {
             if (!merc.isAllied())
                 continue;
@@ -67,8 +67,8 @@ public class BattleFacade {
         List<BattleRound> rounds = BattleStatistics.battle(playerBattleStatistics, enemyBattleStatistics);
 
         // 3. update health to the actual statistics
-        player.getBattleStatistics().setHealth(playerBattleStatistics.getHealth());
-        enemy.getBattleStatistics().setHealth(enemyBattleStatistics.getHealth());
+        playerBaseStatistics.setHealth(playerBattleStatistics.getHealth());
+        enemyBaseStatistics.setHealth(enemyBattleStatistics.getHealth());
 
         // 4. Log the battle - solidate it to be a battle response
         battleResponses.add(new BattleResponse(enemyString,

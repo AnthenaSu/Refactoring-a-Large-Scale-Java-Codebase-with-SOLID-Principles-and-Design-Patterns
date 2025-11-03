@@ -21,14 +21,14 @@ public class ResponseBuilder {
     /** Return the overall state of the dungeon */
     public static DungeonResponse getDungeonResponse(Game game) {
         List<EntityResponse> entityResponse = new ArrayList<>();
-        game.getMap().getEntities().forEach(e -> {
+        game.getEntities().forEach(e -> {
             entityResponse.add(ResponseBuilder.getEntityResponse(game, e));
         });
         return new DungeonResponse(game.getId(), game.getName(), entityResponse,
                 (game.getPlayer() != null) ? getInventoryResponse(game.getPlayer().getInventory()) : null,
-                game.getBattleFacade().getBattleResponses(),
-                (game.getPlayer() != null) ? game.getPlayer().getBuildables() : null,
-                (game.getGoals().achieved(game)) ? "" : game.getGoals().toString(game));
+                game.getBattleResponses(),
+                (game.getPlayer() != null) ? game.getBuildables() : null,
+                (game.achieved(game)) ? "" : game.getGoals().toString(game));
     }
 
     /** Return the state of the inventory */

@@ -31,7 +31,7 @@ public abstract class Enemy extends Entity implements Battleable {
     @Override
     public void onOverlap(GameMap map, Entity entity) {
         if (entity instanceof Player player) {
-            map.getGame().battle(player, this);
+            map.battle(player, this);
         }
     }
 
@@ -40,7 +40,7 @@ public abstract class Enemy extends Entity implements Battleable {
         Game g = map.getGame();
         g.unsubscribe(getId());
         if (this instanceof PotionListener potionListener)
-            map.getPlayer().removePotionListener(potionListener);
+            map.removePotionListener(potionListener);
     }
 
     @Override
@@ -87,4 +87,8 @@ public abstract class Enemy extends Entity implements Battleable {
      * When called, this enemy should move to a new position.
      */
     public abstract void move(Game game);
+
+    public double getHealth() {
+        return battleStatistics.getHealth();
+    }
 }

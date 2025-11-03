@@ -48,7 +48,7 @@ Moreover, in the battle() method within BattleFacade, the loop originally iterat
 
 ### c) Open-Closed Goals (6 marks)
 
-[Links to your merge requests](/put/links/here)
+[Links to your merge requests](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/3)
 
 > i. Do you think the design is of good quality here? Do you think it complies with the open-closed principle? Do you think the design should be changed?
 
@@ -74,13 +74,33 @@ Finally, the buildGoals() method inside GameBuilder was updated to call GoalFact
 
 [Merge Request 1](/put/links/here)
 
-[Briefly explain what you did]
+Law of Demeter
+
+[BattleFacade line 30]
+Before | player.getBattleStatistics().getHealth()         
+After  | create a mehtod called getHealth() inside Player. Call it direcetly: double initialPlayerHealth = player.getHealth();
+
+[BattleFacade line 43]
+Before | player.getInventory().getEntities(InventoryBattle.class)
+After  | create a mehtod called getBattleItemsList() inside Player, returning list of battle items.
+
+Since there are multiple Law of Demeter violations, I created several new helper methods across different classes to improve encapsulation and remove method chaining: 
+
+- public List<Mercenary> getMercenaryList() in Game
+- public List<Entity> getEntities() in Game
+- public List<BattleResponse> getBattleResponses() in Game
+- public boolean achieved(Game game) in Game
+- public List<String> getBuildables() in Game
+- public <T extends InventoryItem> int count(Class<T> itemType) in Player
+- public void removePotionListener(PotionListener listener) in GameMap
+- public void battle(Player player, Enemy enemy) in GameMap
+
+These changes ensure that classes interact only with their immediate collaborators (e.g. Player, GameMap, Game) rather than navigating through multiple object layers.
 
 [Merge Request 2](/put/links/here)
 
 [Briefly explain what you did]
 
-Add all other changes you made in the same format here:
 
 ## Task 2) Evolution of Requirements 🔧
 

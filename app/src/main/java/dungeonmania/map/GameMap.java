@@ -130,6 +130,7 @@ public class GameMap {
         triggerMovingAwayEvent(entity);
         removeNode(entity);
         entity.translate(direction);
+
         addEntity(entity);
         triggerOverlapEvent(entity);
     }
@@ -345,5 +346,14 @@ public class GameMap {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    // my methods
+    public void removePotionListener(PotionListener listener) {
+        player.removePotionListener(listener);
+    }
+
+    public void battle(Player player, Enemy enemy) {
+        game.battle(player, enemy);
     }
 }
