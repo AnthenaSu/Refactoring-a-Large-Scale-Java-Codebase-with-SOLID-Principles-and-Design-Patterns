@@ -10,6 +10,7 @@ import dungeonmania.entities.Player;
 import dungeonmania.entities.buildables.Bow;
 import dungeonmania.entities.collectables.Arrow;
 import dungeonmania.entities.collectables.Key;
+import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.entities.collectables.Sword;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.Useable;
@@ -39,12 +40,13 @@ public class Inventory {
         int arrows = count(Arrow.class);
         int treasure = count(Treasure.class);
         int keys = count(Key.class);
+        int sunstone = count(SunStone.class);
         List<String> result = new ArrayList<>();
 
         if (wood >= 1 && arrows >= 3) {
             result.add("bow");
         }
-        if (wood >= 2 && (treasure >= 1 || keys >= 1)) {
+        if (wood >= 2 && (treasure >= 1 || keys >= 1 || sunstone >= 1)) {
             result.add("shield");
         }
         return result;
@@ -77,13 +79,30 @@ public class Inventory {
             return factory.buildBow();
 
         } else if (wood.size() >= 2 && (treasure.size() >= 1 || keys.size() >= 1)) {
+            // if (remove) {
+            //     items.remove(wood.get(0));
+            //     items.remove(wood.get(1));
+            //     if (treasure.size() >= 1) {
+            //         items.remove(treasure.get(0));
+            //     } else {
+            //         items.remove(keys.get(0));
+            //     }
+            // }
+            // return factory.buildShield();
             if (remove) {
                 items.remove(wood.get(0));
                 items.remove(wood.get(1));
-                if (treasure.size() >= 1) {
-                    items.remove(treasure.get(0));
-                } else {
-                    items.remove(keys.get(0));
+
+                // find a non-SunStone treasure/key first
+                Treasure usedTreasure = treasure.stream()
+                        .filter(t -> !(t instanceof dungeonmania.entities.collectables.SunStone))
+                        .findFirst()
+                        .orElse(null);
+
+                if (usedTreasure != null) {
+                    items.remove(usedTreasure); // consume normal treasure
+                } else if (!keys.isEmpty()) {
+                    items.remove(keys.get(0)); // consume key
                 }
             }
             return factory.buildShield();

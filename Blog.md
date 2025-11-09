@@ -117,11 +117,10 @@ To refactor, I removed unnecessary overrides from unrelated subclasses (e.g. tho
 As a reuslt, subclasses are no longer required to override irrelevant methods. Each entity type now correctly represents its behaviour without empty or redundant method bodies.
 
 [Merge Request 3](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/7)
+
 Added @SuppressWarnings("removal") above calls to Entity.translate(...) to silence compiler warnings. 
 
-
-
-[Merge Request 4](link)
+[Merge Request 4](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/8)
 
 In the original implementation, the constructEntity() method in EntityFactory relied on a long switch statement to determine which type of entity to create. Each case explicitly handled the construction logic for different entities such as Player, Wall, Bomb, Door, and so on. While this approach worked functionally, it violated the Open–Closed Principle of object-oriented design. Every time a new entity type needed to be added or an existing creation logic modified, developers were required to open and modify this switch statement, making the code difficult to maintain and prone to errors.
 

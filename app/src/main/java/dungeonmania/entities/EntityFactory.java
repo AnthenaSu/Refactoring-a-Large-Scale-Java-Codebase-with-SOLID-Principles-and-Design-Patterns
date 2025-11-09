@@ -22,6 +22,7 @@ import dungeonmania.entities.EntityFactories.MercenaryFactory;
 import dungeonmania.entities.EntityFactories.PlayerFactory;
 import dungeonmania.entities.EntityFactories.PortalFactory;
 import dungeonmania.entities.EntityFactories.SpiderFactory;
+import dungeonmania.entities.EntityFactories.SunStoneFactory;
 import dungeonmania.entities.EntityFactories.SwitchFactory;
 import dungeonmania.entities.EntityFactories.SwordFactory;
 import dungeonmania.entities.EntityFactories.TreasureFactory;
@@ -67,6 +68,7 @@ public class EntityFactory {
         BUILDERS.put("treasure", new TreasureFactory());
         BUILDERS.put("wood", new WoodFactory());
         BUILDERS.put("arrow", new ArrowFactory());
+        BUILDERS.put("sun_stone", new SunStoneFactory());
     }
 
     public Entity createEntity(JSONObject jsonEntity) {

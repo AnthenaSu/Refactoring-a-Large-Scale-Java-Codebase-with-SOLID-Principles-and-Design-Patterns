@@ -6,6 +6,7 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.PotionListener;
+import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.InvisibilityPotion;
@@ -57,10 +58,21 @@ public class Mercenary extends Enemy implements Interactable, PotionListener {
      * check whether the current mercenary can be bribed
      */
     private boolean canBeBribed(Player player) {
+        // Position playerPos = player.getPosition();
+        // int distance = Math.abs(playerPos.getX() - getPosition().getX())
+        //         + Math.abs(playerPos.getY() - getPosition().getY());
+        // return distance <= bribeRadius && player.countEntityOfType(Treasure.class) >= bribeAmount;
         Position playerPos = player.getPosition();
         int distance = Math.abs(playerPos.getX() - getPosition().getX())
                 + Math.abs(playerPos.getY() - getPosition().getY());
-        return distance <= bribeRadius && player.countEntityOfType(Treasure.class) >= bribeAmount;
+        if (distance > bribeRadius) return false;
+
+        // Count only Treasure that is NOT a SunStone
+        long bribeableTreasureCount = player.getInventory().getEntities(Treasure.class).stream()
+                .filter(t -> !(t instanceof SunStone))
+                .count();
+
+        return bribeableTreasureCount >= bribeAmount;
     }
 
     /**

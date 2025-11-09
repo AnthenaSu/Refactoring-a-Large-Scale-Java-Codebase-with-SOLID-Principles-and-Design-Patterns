@@ -1,6 +1,7 @@
 package dungeonmania.entities;
 
 import dungeonmania.entities.collectables.Key;
+import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.entities.enemies.Spider;
 import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.map.GameMap;
@@ -20,7 +21,12 @@ public class Door extends Entity {
         if (open || entity instanceof Spider) {
             return true;
         }
-        return (entity instanceof Player player && hasKey(player));
+        // return (entity instanceof Player player && hasKey(player));
+        if (entity instanceof Player player) {
+            // Allow entry if player has matching key or any SunStone
+            return hasKey(player) || hasSunStone(player);
+        }
+        return false;
     }
 
     @Override
@@ -31,6 +37,13 @@ public class Door extends Entity {
         Inventory inventory = player.getInventory();
         Key key = inventory.getFirst(Key.class);
 
+        // If SunStone is present, door opens without consuming it
+        if (hasSunStone(player)) {
+            open();
+            return;
+        }
+
+        // Otherwise, use key normally (and consume it)
         if (hasKey(player)) {
             inventory.remove(key);
             open();
@@ -43,6 +56,12 @@ public class Door extends Entity {
         Key key = inventory.getFirst(Key.class);
 
         return (key != null && key.getnumber() == number);
+    }
+
+    /** Check whether the player possesses at least one SunStone */
+    private boolean hasSunStone(Player player) {
+        Inventory inventory = player.getInventory();
+        return inventory.getFirst(SunStone.class) != null;
     }
 
     public boolean isOpen() {
