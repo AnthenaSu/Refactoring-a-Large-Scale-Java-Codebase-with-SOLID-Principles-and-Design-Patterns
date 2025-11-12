@@ -4,10 +4,11 @@ import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.inventory.InventoryBattle;
+import dungeonmania.entities.onOverLap;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public class Key extends InventoryBattle {
+public class Key extends InventoryBattle implements onOverLap {
     private int number;
 
     public Key(Position position, int number) {

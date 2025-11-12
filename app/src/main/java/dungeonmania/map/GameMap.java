@@ -17,6 +17,7 @@ import dungeonmania.entities.Switch;
 import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.enemies.Enemy;
 import dungeonmania.entities.enemies.ZombieToastSpawner;
+import dungeonmania.entities.onOverLap;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -159,15 +160,26 @@ public class GameMap {
      * Notably, it calls the onOverlap method of all entities being overlapped onto
      * not the entity that is doing the overlapping
      */
+    // private void triggerOverlapEvent(Entity entity) {
+    //     List<Runnable> overlapCallbacks = new ArrayList<>();
+    //     getEntities(entity.getPosition()).forEach(e -> {
+    //         if (e != entity)
+    //             overlapCallbacks.add(() -> e.onOverlap(this, entity));
+    //     });
+    //     overlapCallbacks.forEach(callback -> {
+    //         callback.run();
+    //     });
+    // }
     private void triggerOverlapEvent(Entity entity) {
         List<Runnable> overlapCallbacks = new ArrayList<>();
-        getEntities(entity.getPosition()).forEach(e -> {
-            if (e != entity)
-                overlapCallbacks.add(() -> e.onOverlap(this, entity));
-        });
-        overlapCallbacks.forEach(callback -> {
-            callback.run();
-        });
+    
+        for (Entity e : getEntities(entity.getPosition())) {
+            if (e != entity && e instanceof onOverLap overlappable) {
+                overlapCallbacks.add(() -> overlappable.onOverlap(this, entity));
+            }
+        }
+    
+        overlapCallbacks.forEach(Runnable::run);
     }
 
     /** Return whether the given entity can move to the given position */

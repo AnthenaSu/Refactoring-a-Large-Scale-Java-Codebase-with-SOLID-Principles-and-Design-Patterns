@@ -4,10 +4,11 @@ import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.inventory.InventoryBattle;
+import dungeonmania.entities.onOverLap;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public abstract class Potion extends InventoryBattle {
+public abstract class Potion extends InventoryBattle implements onOverLap {
     private int duration;
 
     public Potion(Position position, int duration) {

@@ -7,7 +7,7 @@ import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public class Door extends Entity {
+public class Door extends Entity implements onOverLap{
     private boolean open = false;
     private int number;
 

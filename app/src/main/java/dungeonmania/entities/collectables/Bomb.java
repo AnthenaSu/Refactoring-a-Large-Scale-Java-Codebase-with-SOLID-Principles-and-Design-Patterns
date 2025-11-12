@@ -6,10 +6,11 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.Switch;
 import dungeonmania.entities.inventory.InventoryItem;
+import dungeonmania.entities.onOverLap;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public class Bomb extends InventoryItem {
+public class Bomb extends InventoryItem implements onOverLap {
     public enum State {
         SPAWNED, PLACED
     }

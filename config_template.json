@@ -33,5 +33,8 @@
     "treasure_goal": 0,
     "zombie_attack": 0,
     "zombie_health": 0,
-    "zombie_spawn_interval": 0
+    "zombie_spawn_interval": 0,
+    "mind_control_duration": 2,
+    "midnight_armour_attack": 1,
+    "midnight_armour_defence": 1
 }

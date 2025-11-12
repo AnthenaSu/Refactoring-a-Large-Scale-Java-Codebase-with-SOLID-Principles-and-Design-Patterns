@@ -16,7 +16,7 @@ import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.util.Direction;
 
-@Timeout(value = 50000, unit = TimeUnit.SECONDS, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
+@Timeout(value = 5, unit = TimeUnit.SECONDS, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
 public class SceptreTest {
 
     @Test
@@ -27,8 +27,8 @@ public class SceptreTest {
         DungeonResponse res = dmc.newGame("d_sceptreTest_craft", "c_sceptreTest");
 
         // pick up materials
-        res = dmc.tick(Direction.RIGHT);  // wood
-        res = dmc.tick(Direction.RIGHT);  // key
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);  // sun stone
 
         // should be buildable
@@ -70,7 +70,7 @@ public class SceptreTest {
     @Test
     @Tag("13-3")
     @DisplayName("Test mind control lasts for configured duration then expires")
-    public void mindControlDuration() throws InvalidActionException {
+    public void mindControlDuration_interactableFlip() throws InvalidActionException {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_sceptreTest_duration", "c_sceptreTest");
 

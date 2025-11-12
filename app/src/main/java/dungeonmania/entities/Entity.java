@@ -76,7 +76,7 @@ public abstract class Entity {
      * Called whenever another entity overlaps with this entity's position. Useful for triggering battles and item
      * collection.
      */
-    public abstract void onOverlap(GameMap map, Entity entity);
+    // public abstract void onOverlap(GameMap map, Entity entity);
 
     // /** Called whenever another entity moves away from this entity's position */
     // public abstract void onMovedAway(GameMap map, Entity entity);

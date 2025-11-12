@@ -12,9 +12,4 @@ public class Exit extends Entity {
     public boolean canMoveOnto(GameMap map, Entity entity) {
         return true;
     }
-
-    @Override
-    public void onOverlap(GameMap map, Entity entity) {
-        return;
-    }
 }

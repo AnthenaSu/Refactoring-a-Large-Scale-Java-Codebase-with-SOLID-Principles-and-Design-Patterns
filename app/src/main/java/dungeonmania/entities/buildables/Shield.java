@@ -3,8 +3,9 @@ package dungeonmania.entities.buildables;
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.collectables.Useable;
+import dungeonmania.entities.inventory.InventoryBattle;
 
-public class Shield extends Buildable implements Useable {
+public class Shield extends InventoryBattle implements Useable {
     private int durability;
     private double defence;
 

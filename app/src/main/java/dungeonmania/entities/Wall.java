@@ -13,9 +13,4 @@ public class Wall extends Entity {
     public boolean canMoveOnto(GameMap map, Entity entity) {
         return entity instanceof Spider;
     }
-
-    @Override
-    public void onOverlap(GameMap map, Entity entity) {
-        return;
-    }
 }

@@ -6,10 +6,11 @@ import dungeonmania.battles.Battleable;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.PotionListener;
+import dungeonmania.entities.onOverLap;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public abstract class Enemy extends Entity implements Battleable {
+public abstract class Enemy extends Entity implements Battleable, onOverLap {
     private BattleStatistics battleStatistics;
 
     public Enemy(Position position, double health, double attack) {
@@ -28,7 +29,7 @@ public abstract class Enemy extends Entity implements Battleable {
         return battleStatistics;
     }
 
-    // @Override
+    @Override
     public void onOverlap(GameMap map, Entity entity) {
         if (entity instanceof Player player) {
             map.battle(player, this);

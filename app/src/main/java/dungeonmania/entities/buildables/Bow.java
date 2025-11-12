@@ -3,8 +3,9 @@ package dungeonmania.entities.buildables;
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.collectables.Useable;
+import dungeonmania.entities.inventory.InventoryBattle;
 
-public class Bow extends Buildable implements Useable {
+public class Bow extends InventoryBattle implements Useable {
     private int durability;
 
     public Bow(int durability) {
