@@ -1,0 +1,18 @@
+{
+    "enemy_attack": 5,
+    "enemy_health": 10,
+    "player_attack": 5,
+    "player_health": 20,
+    "spider_spawn_interval": 0,
+    "zombie_spawn_interval": 0,
+    "bribe_amount": 1,
+    "bribe_radius": 1,
+    "ally_attack": 2,
+    "ally_defence": 1,
+    "bow_durability": 3,
+    "shield_durability": 3,
+    "shield_defence": 3,
+    "mind_control_duration": 2,
+    "midnight_armour_attack": 5,
+    "midnight_armour_defence": 3
+}

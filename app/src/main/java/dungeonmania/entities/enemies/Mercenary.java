@@ -32,7 +32,8 @@ public class Mercenary extends Enemy implements Interactable, PotionListener {
     private String movementType = "hostile";
     private DoMovement movementStrategy = new DoMovement();
 
-    // private MoveStrategy movementStrategy = new FollowPlayerStrategy();
+    private int mindControlTicks = 0;  // remaining ticks of mind control
+    private boolean mindControlled = false;
 
     public Mercenary(Position position, double health, double attack, int bribeAmount, int bribeRadius,
             double allyAttack, double allyDefence) {
@@ -87,6 +88,14 @@ public class Mercenary extends Enemy implements Interactable, PotionListener {
 
     @Override
     public void interact(Player player, Game game) {
+        boolean hasSceptre = player.getInventory().getFirst(dungeonmania.entities.buildables.Sceptre.class) != null;
+        if (hasSceptre) {
+            dungeonmania.entities.buildables.Sceptre sceptre =
+                player.getInventory().getFirst(dungeonmania.entities.buildables.Sceptre.class);
+            mindControl(player, sceptre.getMindControlDuration());
+            return;
+        }
+
         allied = true;
         movementType = "allied";
         bribe(player);
@@ -97,6 +106,16 @@ public class Mercenary extends Enemy implements Interactable, PotionListener {
         Position nextPos = null;
         GameMap map = game.getMap();
         Player player = game.getPlayer();
+
+        if (mindControlled) {
+            if (mindControlTicks < 0) {
+                mindControlled = false;
+                allied = false;
+                movementType = "hostile";
+            }
+            mindControlTicks--;
+        }
+
         switch (movementType) {
         case "allied":
             boolean isAdjacentToPlayer = Position.isAdjacent(player.getPosition(), getPosition());
@@ -130,7 +149,13 @@ public class Mercenary extends Enemy implements Interactable, PotionListener {
 
     @Override
     public boolean isInteractable(Player player) {
-        return !allied && canBeBribed(player);
+        // normal bribing condition
+        boolean canBribeNormally = !allied && canBeBribed(player);
+
+        // mind control with sceptre
+        boolean hasSceptre = player.getInventory().getFirst(dungeonmania.entities.buildables.Sceptre.class) != null;
+
+        return !allied && (canBribeNormally || hasSceptre);
     }
 
     @Override
@@ -157,5 +182,28 @@ public class Mercenary extends Enemy implements Interactable, PotionListener {
             return;
 
         movementType = "hostile";
+    }
+
+    public void mindControl(Player player, int duration) {
+        this.mindControlled = true;
+        this.mindControlTicks = duration;
+        this.allied = true;
+        this.movementType = "allied";
+    }
+
+    public String getType() {
+        return "mercenary";
+    }
+
+    public int getBribeAmount() {
+        return bribeAmount;
+    }
+
+    public int getBribeRadius() {
+        return bribeRadius;
+    }
+
+    public String getMovementType() {
+        return movementType;
     }
 }

@@ -49,6 +49,9 @@ public class Inventory {
         if (wood >= 2 && (treasure >= 1 || keys >= 1 || sunstone >= 1)) {
             result.add("shield");
         }
+        if ((wood >= 1 || arrows >= 2) && (keys >= 1 || treasure >= 1) && sunstone >= 1) {
+            result.add("sceptre");
+        }
         return result;
     }
 
@@ -67,6 +70,7 @@ public class Inventory {
         List<Wood> wood = getEntities(Wood.class);
         List<Arrow> arrows = getEntities(Arrow.class);
         List<Treasure> treasure = getEntities(Treasure.class);
+        List<SunStone> sunstone = getEntities(SunStone.class);
         List<Key> keys = getEntities(Key.class);
 
         if (wood.size() >= 1 && arrows.size() >= 3 && !forceShield) {
@@ -79,16 +83,6 @@ public class Inventory {
             return factory.buildBow();
 
         } else if (wood.size() >= 2 && (treasure.size() >= 1 || keys.size() >= 1)) {
-            // if (remove) {
-            //     items.remove(wood.get(0));
-            //     items.remove(wood.get(1));
-            //     if (treasure.size() >= 1) {
-            //         items.remove(treasure.get(0));
-            //     } else {
-            //         items.remove(keys.get(0));
-            //     }
-            // }
-            // return factory.buildShield();
             if (remove) {
                 items.remove(wood.get(0));
                 items.remove(wood.get(1));
@@ -106,6 +100,32 @@ public class Inventory {
                 }
             }
             return factory.buildShield();
+        } else if ((wood.size() >= 1 || arrows.size() >= 2)
+        && (treasure.size() >= 1 || keys.size() >= 1) && sunstone.size() >= 1) {
+            if (remove) {
+                // consume 1 wood or 2 arrows
+                if (wood.size() >= 1) {
+                    items.remove(wood.get(0));
+                } else {
+                    items.remove(arrows.get(0));
+                    items.remove(arrows.get(1));
+                }
+
+                // consume (key OR treasure OR sunstone)
+                if (!keys.isEmpty()) {
+                    items.remove(keys.get(0));
+                } else if (!treasure.isEmpty()) {
+                    items.remove(treasure.get(0));
+                } else {
+                    // use sunstone as replacement
+                    items.remove(sunstone.get(0));
+                }
+
+                if (!sunstone.isEmpty()) {
+                    items.remove(sunstone.get(0));
+                }
+            }
+            return factory.buildSceptre();
         }
         return null;
     }

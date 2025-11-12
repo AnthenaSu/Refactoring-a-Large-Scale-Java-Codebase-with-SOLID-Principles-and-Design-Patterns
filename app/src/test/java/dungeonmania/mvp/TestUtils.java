@@ -262,4 +262,12 @@ public class TestUtils {
     public static List<String> getBuildables(DungeonResponse res) {
         return res.getBuildables();
     }
+
+    public static boolean isEntityAllied(DungeonResponse res, String id) {
+        return res.getEntities().stream()
+            .filter(e -> e.getId().equals(id))
+            .findFirst()
+            .map(e -> !e.isInteractable())   // with a sceptre, only allies are non-interactable
+            .orElse(false);
+    }
 }
