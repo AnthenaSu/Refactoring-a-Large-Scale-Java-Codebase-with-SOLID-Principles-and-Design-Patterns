@@ -29,7 +29,7 @@ import dungeonmania.util.Position;
  * The player object stores critical information about the player such as their inventory, potion queue and battle
  * statistics.
  */
-public class Player extends Entity implements Battleable, onOverLap {
+public class Player extends Entity implements Battleable, OverLap {
     public static final double DEFAULT_ATTACK = 5.0;
     public static final double DEFAULT_HEALTH = 5.0;
     /** Stats used when the player goes into battle */

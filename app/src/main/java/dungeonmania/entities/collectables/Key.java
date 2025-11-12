@@ -2,13 +2,13 @@ package dungeonmania.entities.collectables;
 
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.OverLap;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.inventory.InventoryBattle;
-import dungeonmania.entities.onOverLap;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public class Key extends InventoryBattle implements onOverLap {
+public class Key extends InventoryBattle implements OverLap {
     private int number;
 
     public Key(Position position, int number) {

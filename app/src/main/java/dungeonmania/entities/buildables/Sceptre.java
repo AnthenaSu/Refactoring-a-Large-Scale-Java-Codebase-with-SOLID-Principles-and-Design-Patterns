@@ -11,7 +11,7 @@ public class Sceptre extends InventoryItem {
     public Sceptre(int mindControlDuration) {
         super(null);
         this.mindControlDuration = mindControlDuration;
-    } 
+    }
 
     /**
      * Returns the number of ticks the mind control lasts.

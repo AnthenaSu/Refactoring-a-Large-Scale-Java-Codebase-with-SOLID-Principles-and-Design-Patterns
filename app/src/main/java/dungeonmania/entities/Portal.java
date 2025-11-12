@@ -7,7 +7,7 @@ import dungeonmania.entities.enemies.Mercenary;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public class Portal extends Entity implements onOverLap {
+public class Portal extends Entity implements OverLap {
     /** Color of this portal */
     private ColorCodedType color;
     /** Reference to the paired portal */

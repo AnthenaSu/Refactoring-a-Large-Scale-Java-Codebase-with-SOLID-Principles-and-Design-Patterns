@@ -70,7 +70,7 @@ public class SceptreTest {
     @Test
     @Tag("13-3")
     @DisplayName("Test mind control lasts for configured duration then expires")
-    public void mindControlDuration_interactableFlip() throws InvalidActionException {
+    public void mindControlDuration() throws InvalidActionException {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_sceptreTest_duration", "c_sceptreTest");
 
