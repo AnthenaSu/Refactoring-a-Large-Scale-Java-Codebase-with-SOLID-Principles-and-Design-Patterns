@@ -68,7 +68,7 @@ public class SceptreTest {
     }
 
     @Test
-    @Tag("13-3")
+    @Tag("13-5")
     @DisplayName("Test mind control lasts for configured duration then expires")
     public void mindControlDuration() throws InvalidActionException {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -97,6 +97,48 @@ public class SceptreTest {
         res = dmc.tick(Direction.RIGHT);
         assertTrue(isInteractableById(res, mercId));
     }
+
+    @Test
+    @Tag("13-3")
+    @DisplayName("Test mercenary interactability flips correctly after mind control duration")
+    public void testMindControlInteractableLifecycle() throws InvalidActionException {
+        DungeonManiaController dmc = new DungeonManiaController();
+        // Use a test dungeon/config where mercenary + resources exist.
+        // For example:
+        DungeonResponse res = dmc.newGame("d_sceptreTest_duration", "c_sceptreTest");
+
+        // Player picks up wood, key, and sun stone → can build sceptre
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.build("sceptre");
+
+        String mercId = res.getEntities().stream()
+            .filter(e -> e.getType().equals("mercenary"))
+            .findFirst().get().getId();
+
+        // Mind control begins
+        res = assertDoesNotThrow(() -> dmc.interact(mercId));
+
+        // Tick 1: enemy still controlled → NOT interactable
+        res = dmc.tick(Direction.RIGHT);
+        assertFalse(isInteractableById(res, mercId),
+            "Mercenary should NOT be interactable during mind control (tick 1)");
+
+        // Tick 2: still controlled → NOT interactable
+        res = dmc.tick(Direction.RIGHT);
+        assertFalse(isInteractableById(res, mercId),
+            "Mercenary should still NOT be interactable (tick 2)");
+
+        // Tick 3: control expired → becomes interactable again
+        res = dmc.tick(Direction.RIGHT);
+        assertTrue(isInteractableById(res, mercId),
+            "Mercenary should become interactable again once mind control expires (tick 3)");
+    }
+
+    /**
+     * Helper function to check interactability by entity id.
+     */
 
     private static boolean isInteractableById(DungeonResponse res, String id) {
         return res.getEntities().stream().anyMatch(e -> e.getId().equals(id) && e.isInteractable());

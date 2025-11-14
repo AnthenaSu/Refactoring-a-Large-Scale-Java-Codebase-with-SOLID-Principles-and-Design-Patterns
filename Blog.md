@@ -128,6 +128,11 @@ To address this issue, I refactored the design by introducing a Factory Pattern 
 
 This change not only satisfies the Open–Closed Principle but also greatly improves Single Responsibility. Since each entity’s creation logic now resides in its own dedicated factory class, the EntityFactory class itself no longer contains entity-specific logic or numerous buildXYZ() methods.
 
+[Merge Request 5](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/11)
+
+Introduce Overlap interface and refactor entity overlap system.
+This change modularises how entities respond to overlaps by introducing an Overlap interface.
+Previously, all entities inherited an onOverlap() method from the base Entity class, even when most of them didn’t need overlap behaviour. By moving this into an interface, only the entities that actually react to overlaps (e.g. Enemy, Switch, Portal, etc.) implement it — making the design cleaner, safer, and easier to extend. This enhances the design principle: Interface Segregation Principle since only classes that care about overlap events implement Overlap, keeping interfaces focused and minimal. Moreover, it strengthens Open–Closed Principle becasue if we want to add a new overlapping entity, we do not have to edit the base Entity class. Therefore, the system becomes easier to extend.
 
 
 ## Task 2) Evolution of Requirements 🔧
@@ -136,43 +141,28 @@ This change not only satisfies the Open–Closed Principle but also greatly impr
 
 ### Sun Stone & More Buildables (20 marks)
 
-[Links to your merge requests](/put/links/here)
+[Links to your merge requests 1](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/9)
+[Links to your merge requests 1](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/10)
 
 **Assumptions**
-
 [Any assumptions made]
 
 **Design**
+Design Decisions: 
 
-[Design]
+1. Originally, I designed a class hierarchy where Buildable extended InventoryBattle, which in turn extended InventoryItem, all defined within the buildable file. This structure worked for buildable items such as Bow and Shield in Task 1 Part A, since these items participate in battles and require methods like applyBuff and getDurability.
+However, when introducing the new entity Sceptre, I found that this inheritance model was unsuitable. The Sceptre cannot engage in battles and therefore does not need any battle-related behaviour or methods.
+To resolve this, I refactored the hierarchy:
+    - All items that can be crafted (built) remain defined in the buildable file.
+    - Buildable items that also contribute to battles now extend InventoryBattle, which itself extends InventoryItem.
+    - Buildable items that do not participate in battles simply extend InventoryItem.
+This change improves inheritance cohesion and adheres to the Single Responsibility Principle, ensuring that each subclass only inherits behaviour relevant to its purpose.
 
-**Changes after review**
-
-[Design review/Changes made]
-
-**Test list**
-
-[Test List]
-
-**Other notes**
-
-[Any other notes]
-
-### Logic Switches (30 marks)
-
-[Links to your merge requests](/put/links/here)
-
-**Assumptions**
-
-[Any assumptions made]
-
-**Design**
-
-[Design]
+2. Factory pattern 
 
 **Changes after review**
 
-[Design review/Changes made]
+
 
 **Test list**
 

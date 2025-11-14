@@ -41,6 +41,7 @@ public class Inventory {
         int treasure = count(Treasure.class);
         int keys = count(Key.class);
         int sunstone = count(SunStone.class);
+        int sword = count(Sword.class);
         List<String> result = new ArrayList<>();
 
         if (wood >= 1 && arrows >= 3) {
@@ -51,6 +52,9 @@ public class Inventory {
         }
         if ((wood >= 1 || arrows >= 2) && (keys >= 1 || treasure >= 1) && sunstone >= 1) {
             result.add("sceptre");
+        }
+        if (sword >= 1 && sunstone >= 1) {
+            result.add("midnight_armour");
         }
         return result;
     }
@@ -126,6 +130,14 @@ public class Inventory {
                 }
             }
             return factory.buildSceptre();
+        } else if (count(Sword.class) >= 1 && count(SunStone.class) >= 1) {
+            // build midnight armour
+            if (remove) {
+                // consume 1 sword and 1 sun stone
+                items.remove(getFirst(Sword.class));
+                items.remove(getFirst(SunStone.class));
+            }
+            return factory.buildMidnightArmour();
         }
         return null;
     }

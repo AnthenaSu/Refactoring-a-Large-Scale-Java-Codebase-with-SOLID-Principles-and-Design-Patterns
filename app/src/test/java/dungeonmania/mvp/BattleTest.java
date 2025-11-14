@@ -1,23 +1,24 @@
 package dungeonmania.mvp;
 
-import dungeonmania.DungeonManiaController;
-import dungeonmania.exceptions.InvalidActionException;
-import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.response.models.BattleResponse;
-import dungeonmania.response.models.RoundResponse;
-import dungeonmania.response.models.EntityResponse;
-import dungeonmania.util.Direction;
-import dungeonmania.util.Position;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Timeout;
+
+import dungeonmania.DungeonManiaController;
+import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.response.models.BattleResponse;
+import dungeonmania.response.models.DungeonResponse;
+import dungeonmania.response.models.EntityResponse;
+import dungeonmania.response.models.RoundResponse;
+import dungeonmania.util.Direction;
+import dungeonmania.util.Position;
 
 @Timeout(value = 5, unit = TimeUnit.SECONDS, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
 public class BattleTest {

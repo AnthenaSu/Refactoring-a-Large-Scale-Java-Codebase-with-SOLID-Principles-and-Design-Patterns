@@ -80,7 +80,15 @@ public class DungeonManiaController {
         if (!validBuildables.contains(buildable)) {
             throw new IllegalArgumentException("Only bow, shield, midnight_armour and sceptre can be built");
         }
-
+        // if (buildable.equals("midnight_armour")) {
+        //     boolean hasZombies = game.getMap().getEntities().stream()
+        //         .anyMatch(e -> e instanceof dungeonmania.entities.enemies.ZombieToast);
+        //     if (hasZombies) {
+        //         throw new InvalidActionException(
+        //             "Cannot build Midnight Armour while zombies are present in the dungeon."
+        //         );
+        //     }
+        // }
         return ResponseBuilder.getDungeonResponse(game.build(buildable));
     }
 

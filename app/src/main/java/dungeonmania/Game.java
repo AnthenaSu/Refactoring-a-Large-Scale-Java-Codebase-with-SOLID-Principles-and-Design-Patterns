@@ -200,6 +200,21 @@ public class Game {
         if (!interactable.isInteractable(player)) {
             throw new InvalidActionException("Entity cannot be interacted");
         }
+        // mercenary
+        if (e instanceof Mercenary merc) {
+            boolean hasSceptre = player.getInventory().getFirst(
+                dungeonmania.entities.buildables.Sceptre.class
+            ) != null;
+            boolean hasEnoughTreasure = player.getInventory()
+                .getEntities(dungeonmania.entities.collectables.Treasure.class)
+                .stream()
+                .filter(t -> !(t instanceof dungeonmania.entities.collectables.SunStone))
+                .count() >= merc.getBribeAmount();
+
+            if (!hasSceptre && !hasEnoughTreasure)
+                throw new InvalidActionException(
+                    "Player does not have enough gold and no sceptre to bribe or mind-control the mercenary");
+        }
         registerOnce(() -> interactable.interact(player, this), PLAYER_MOVEMENT, "playerInteracts");
         tick();
         return this;

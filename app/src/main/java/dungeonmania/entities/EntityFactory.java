@@ -31,6 +31,7 @@ import dungeonmania.entities.EntityFactories.WoodFactory;
 import dungeonmania.entities.EntityFactories.ZombieFactory;
 import dungeonmania.entities.EntityFactories.ZombieToastSpawnerFactory;
 import dungeonmania.entities.buildables.Bow;
+import dungeonmania.entities.buildables.MidnightArmour;
 import dungeonmania.entities.buildables.Sceptre;
 import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.enemies.Enemy;
@@ -137,6 +138,12 @@ public class EntityFactory {
     public Sceptre buildSceptre() {
         int duration = config.optInt("mind_control_duration");
         return new Sceptre(duration);
+    }
+
+    public MidnightArmour buildMidnightArmour() {
+        double attack = config.optDouble("midnight_armour_attack");
+        double defence = config.optDouble("midnight_armour_defence");
+        return new MidnightArmour(defence, attack);
     }
 
     private Entity constructEntity(JSONObject jsonEntity, JSONObject config) {

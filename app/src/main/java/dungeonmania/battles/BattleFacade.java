@@ -41,12 +41,23 @@ public class BattleFacade {
             playerBuff = player.applyBuff(playerBuff);
         } else {
             for (InventoryBattle item : player.getBattleItemsList()) {
-                if (item instanceof Bow || item instanceof Shield || item instanceof Sword || item instanceof Potion) {
+                if (item instanceof Bow || item instanceof Shield || item instanceof Sword
+                || item instanceof Potion || item instanceof dungeonmania.entities.buildables.MidnightArmour) {
                     playerBuff = item.applyBuff(playerBuff);
                     battleItems.add(item);
                     ((Useable) item).use(game);
                 }
             }
+            // for (InventoryItem item : player.getBattleItemsList()) {
+            //     if (item instanceof InventoryBattle battleItem) {
+            //         playerBuff = battleItem.applyBuff(playerBuff);
+            //         battleItems.add(battleItem);
+
+            //         if (battleItem instanceof Useable useableItem) {
+            //             useableItem.use(game);
+            //         }
+            //     }
+            // }
         }
 
         List<Mercenary> mercs = game.getMercenaryList();
