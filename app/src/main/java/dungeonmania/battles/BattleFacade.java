@@ -7,9 +7,6 @@ import java.util.stream.Collectors;
 import dungeonmania.Game;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
-import dungeonmania.entities.buildables.Bow;
-import dungeonmania.entities.buildables.Shield;
-import dungeonmania.entities.collectables.Sword;
 import dungeonmania.entities.collectables.Useable;
 import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.Enemy;
@@ -40,24 +37,24 @@ public class BattleFacade {
         if (effectivePotion != null) {
             playerBuff = player.applyBuff(playerBuff);
         } else {
-            for (InventoryBattle item : player.getBattleItemsList()) {
-                if (item instanceof Bow || item instanceof Shield || item instanceof Sword
-                || item instanceof Potion || item instanceof dungeonmania.entities.buildables.MidnightArmour) {
-                    playerBuff = item.applyBuff(playerBuff);
-                    battleItems.add(item);
-                    ((Useable) item).use(game);
-                }
-            }
-            // for (InventoryItem item : player.getBattleItemsList()) {
-            //     if (item instanceof InventoryBattle battleItem) {
-            //         playerBuff = battleItem.applyBuff(playerBuff);
-            //         battleItems.add(battleItem);
-
-            //         if (battleItem instanceof Useable useableItem) {
-            //             useableItem.use(game);
-            //         }
+            // for (InventoryBattle item : player.getBattleItemsList()) {
+            //     if (item instanceof Bow || item instanceof Shield || item instanceof Sword
+            //     || item instanceof Potion || item instanceof dungeonmania.entities.buildables.MidnightArmour) {
+            //         playerBuff = item.applyBuff(playerBuff);
+            //         battleItems.add(item);
+            //         ((Useable) item).use(game);
             //     }
             // }
+            for (InventoryItem item : player.getBattleItemsList()) {
+                if (item instanceof InventoryBattle battleItem) {
+                    if (battleItem instanceof Useable useableItem) {
+                        playerBuff = battleItem.applyBuff(playerBuff);
+                        battleItems.add(battleItem);
+                        useableItem.use(game);
+                    }
+                }
+            }
+
         }
 
         List<Mercenary> mercs = game.getMercenaryList();

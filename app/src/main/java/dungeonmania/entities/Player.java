@@ -86,7 +86,7 @@ public class Player extends Entity implements Battleable, OverLap {
         map.moveTo(this, Position.translateBy(this.getPosition(), direction));
     }
 
-    @Override
+    // @Override
     public void onOverlap(GameMap map, Entity entity) {
         if (entity instanceof Enemy enemy) {
             if (enemy instanceof Mercenary mercenary && mercenary.isAllied())
