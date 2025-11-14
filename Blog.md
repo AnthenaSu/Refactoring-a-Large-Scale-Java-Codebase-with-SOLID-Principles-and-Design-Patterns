@@ -134,7 +134,7 @@ Introduce Overlap interface and refactor entity overlap system.
 This change modularises how entities respond to overlaps by introducing an Overlap interface.
 Previously, all entities inherited an onOverlap() method from the base Entity class, even when most of them didn’t need overlap behaviour. By moving this into an interface, only the entities that actually react to overlaps (e.g. Enemy, Switch, Portal, etc.) implement it — making the design cleaner, safer, and easier to extend. This enhances the design principle: Interface Segregation Principle since only classes that care about overlap events implement Overlap, keeping interfaces focused and minimal. Moreover, it strengthens Open–Closed Principle becasue if we want to add a new overlapping entity, we do not have to edit the base Entity class. Therefore, the system becomes easier to extend.
 
-[Merge Request 6]
+[Merge Request 6](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/13)
 Open/Closed Principle (OCP) and Dependency Inversion Principle (DIP)
 Originall, I applied buff in BattleFacade by writing: 
     if (item instanceof Bow || item instanceof Shield || item instanceof Sword
@@ -183,10 +183,13 @@ However, this list will increase every time a new battle item is added, violatin
     }
 Adding Midnight Armour (or furture new battle items) shouldn’t require modifying BattleFacade.
 
-3. I introduced a dedicated "Useable" interface to separate battle items that lose durability from those that do not. In the original design, all battle-related items were handled uniformly, which caused unnecessary removals of entities such as Midnight Armour. Midnight Armour provides permanent attack and defence bonuses and lasts forever, meaning it should never have its durability reduced or be removed from the inventory during battle. In contrast, items like the Bow, Shield, and Sword are consumed over time and must correctly decrement durability after each use. By making only durability-dependent items implement the Useable interface, the battle system can safely call use() without affecting permanent entities like Midnight Armour. This improves correctness, avoids accidental removal of non-consumable gear, and separates permanent battle buffs from consumable battle items.
+3. I introduced a dedicated "Useable" interface to separate battle items that lose durability from those that do not. In the original design, all battle-related items were handled uniformly, which caused unnecessary removals of entities such as Midnight Armour. Midnight Armour provides permanent attack and defence bonuses and lasts forever, meaning it should never have its durability reduced or be removed from the inventory during battle. In contrast, items like the Bow, Shield, and Sword are consumed over time and must correctly decrement durability after each use. By making only durability-dependent items implement the Useable interface, the battle system can safely call use() without affecting permanent entities like Midnight Armour. This separates permanent battle buffs from consumable battle items.
+
+4. I made SunStone extend Treasure because the spec defines it as a special form of treasure. By inheriting from Treasure, the Sun Stone automatically counts toward the treasure goal and behaves like other collectible valuables, without duplicating code. The Sun Stone then overrides only the behaviours that differ from normal treasure. For example, it can open any door, cannot bribe mercenaries, and is only consumed when used as a listed crafting ingredient. This follows the Liskov Substitution Principle (LSP), since a SunStone can be safely substituted wherever a Treasure is expected, while still adding its own specialised functionality.
+
 
 **Changes after review**
-
+1. I refactored the Mercenary class by separating its major behaviours into dedicated components, improving modularity. Originally, Mercenary handled bribing, mind control, and multiple movement modes within one class, giving it multiple responsibilities and making future extensions difficult. I introduced separate classes: BribeBehaviour, MindControlBehaviour, and MovementBehaviour. This reduces coupling and ensures each behaviour has a single responsibility, improving both SRP and OCP. The Mercenary class now acts as a coordinator rather than a God object. 
 
 
 **Test list**
