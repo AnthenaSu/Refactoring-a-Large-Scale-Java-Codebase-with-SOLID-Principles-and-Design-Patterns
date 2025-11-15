@@ -29,12 +29,4 @@ public class MidnightArmour extends InventoryBattle {
         return "midnight_armour";
     }
 
-    public double getAttackBonus() {
-        return extraAttack;
-    }
-
-    public double getDefenceBonus() {
-        return extraDefense;
-    }
-
 }

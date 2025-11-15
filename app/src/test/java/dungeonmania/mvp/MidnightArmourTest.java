@@ -3,6 +3,7 @@ package dungeonmania.mvp;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,15 +12,18 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import dungeonmania.DungeonManiaController;
+import dungeonmania.entities.buildables.MidnightArmour;
 import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
+import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 
 public class MidnightArmourTest {
 
     @Test
-    @Tag("Task 2 - Midnight Armour")
+    @Tag("20")
     @DisplayName("Can build midnight armour when no zombies exist")
     public void testBuildMidnightArmourNoZombies() throws InvalidActionException {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -40,7 +44,7 @@ public class MidnightArmourTest {
     }
 
     @Test
-    @Tag("Task 2 - Midnight Armour")
+    @Tag("21")
     @DisplayName("Cannot build midnight armour when zombies exist")
     public void testBuildMidnightArmourWithZombies() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -66,7 +70,16 @@ public class MidnightArmourTest {
     }
 
     @Test
-    @Tag("Task 2 - Midnight Armour")
+    @Tag("19")
+    @DisplayName("Midnight Armour get functions")
+    public void testDurabilityAlwaysOne() {
+        MidnightArmour m = new MidnightArmour(3, 4);
+        assertEquals(1, m.getDurability());
+        assertEquals("midnight_armour", m.getType());
+    }
+
+    @Test
+    @Tag("22")
     @DisplayName("Cannot build without required materials")
     public void testBuildMidnightArmourMissingItems() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -85,4 +98,36 @@ public class MidnightArmourTest {
     private List<EntityResponse> getZombies(DungeonResponse res) {
         return TestUtils.getEntities(res, "zombie_toast");
     }
+
+
+    @Test
+    @Tag("23")
+    @DisplayName("Midnight Armour provides attack & defence boosts in battle")
+    public void testMidnightArmourBattleEffect() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_midnight_armour_effect_original", "c_midnight_armour_test");
+
+        // Pick up the sword (RIGHT), then sun stone (DOWN)
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.DOWN);
+
+        // Craft the armour
+        res = assertDoesNotThrow(() -> dmc.build("midnight_armour"));
+        assertEquals(1, TestUtils.getInventory(res, "midnight_armour").size());
+
+        // Move into the enemy
+        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.RIGHT);
+        assertTrue(res.getBattles().size() == 1);
+
+        BattleResponse br = res.getBattles().get(0);
+        RoundResponse round = br.getRounds().get(0);
+
+        assertEquals(2.8, -round.getDeltaEnemyHealth());
+        assertEquals(0.2, -round.getDeltaCharacterHealth());
+    }
+
+
+
+
 }

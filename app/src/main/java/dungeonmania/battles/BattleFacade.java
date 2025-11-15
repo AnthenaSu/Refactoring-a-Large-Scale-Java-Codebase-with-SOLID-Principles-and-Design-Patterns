@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import dungeonmania.Game;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
+import dungeonmania.entities.collectables.Key;
 import dungeonmania.entities.collectables.Useable;
 import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.Enemy;
@@ -37,24 +38,15 @@ public class BattleFacade {
         if (effectivePotion != null) {
             playerBuff = player.applyBuff(playerBuff);
         } else {
-            // for (InventoryBattle item : player.getBattleItemsList()) {
-            //     if (item instanceof Bow || item instanceof Shield || item instanceof Sword
-            //     || item instanceof Potion || item instanceof dungeonmania.entities.buildables.MidnightArmour) {
-            //         playerBuff = item.applyBuff(playerBuff);
-            //         battleItems.add(item);
-            //         ((Useable) item).use(game);
-            //     }
-            // }
-            for (InventoryItem item : player.getBattleItemsList()) {
-                if (item instanceof InventoryBattle battleItem) {
-                    if (battleItem instanceof Useable useableItem) {
-                        playerBuff = battleItem.applyBuff(playerBuff);
-                        battleItems.add(battleItem);
-                        useableItem.use(game);
+            for (InventoryBattle item : player.getBattleItemsList()) {
+                if (item != null && !(item instanceof Key)) {
+                    playerBuff = item.applyBuff(playerBuff);
+                    battleItems.add(item);
+                    if (item instanceof Useable u) {
+                        u.use(game);
                     }
                 }
             }
-
         }
 
         List<Mercenary> mercs = game.getMercenaryList();

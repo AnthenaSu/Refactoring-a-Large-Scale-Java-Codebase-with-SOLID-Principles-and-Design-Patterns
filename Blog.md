@@ -140,11 +140,13 @@ Originall, I applied buff in BattleFacade by writing:
     if (item instanceof Bow || item instanceof Shield || item instanceof Sword
         || item instanceof Potion)
 However, this list will increase every time a new battle item is added, violating OCP. Moreover, this means BattleFacade depends directly on the specific concrete classes, violating DIP. After design: 
-    if (item instanceof InventoryBattle battleItem) {
-        if (battleItem instanceof Useable useableItem) {
-            playerBuff = battleItem.applyBuff(playerBuff);
-            battleItems.add(battleItem);
-            useableItem.use(game);
+    for (InventoryBattle item : player.getBattleItemsList()) {
+        if (item != null && !(item instanceof Key)) {
+            playerBuff = item.applyBuff(playerBuff);
+            battleItems.add(item);
+            if (item instanceof Useable u) {
+                u.use(game);
+            }
         }
     }
 
