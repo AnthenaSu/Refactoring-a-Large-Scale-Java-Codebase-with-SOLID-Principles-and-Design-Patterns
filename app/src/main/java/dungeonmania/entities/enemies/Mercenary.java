@@ -1,5 +1,8 @@
 package dungeonmania.entities.enemies;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.Entity;
@@ -34,7 +37,13 @@ public class Mercenary extends Enemy implements Interactable, PotionListener {
     private MindControlBehaviour mindControlBehaviour;
     private MovementBehaviour movementBehaviour;
 
-    private DoMovement movementStrategy = new DoMovement();
+    // private DoMovement movementStrategy = new DoMovement();
+    private static final Map<String, MoveStrategy> MOVE = new HashMap<>();
+    static {
+        MOVE.put("invisible", new RandomMovement());
+        MOVE.put("invincible", new FleeMovement());
+        MOVE.put("hostile", new DijkstraMovement());
+    }
 
     public Mercenary(Position position, double health, double attack, int bribeAmount, int bribeRadius,
             double allyAttack, double allyDefence) {
@@ -88,8 +97,36 @@ public class Mercenary extends Enemy implements Interactable, PotionListener {
             }
         }
 
-        switch (movementBehaviour.getType()) {
-        case "allied":
+        // switch (movementBehaviour.getType()) {
+        // case "allied":
+        //     boolean isAdjacentToPlayer = Position.isAdjacent(player.getPosition(), getPosition());
+        //     if (wasAdjacentToPlayer && !isAdjacentToPlayer) {
+        //         nextPos = player.getPreviousDistinctPosition();
+        //     } else {
+        //         // If currently still adjacent, wait in place. Else pursue the player.
+        //         nextPos = isAdjacentToPlayer ? getPosition()
+        //                 : map.dijkstraPathFind(getPosition(), player.getPosition(), this);
+        //         wasAdjacentToPlayer = Position.isAdjacent(player.getPosition(), nextPos);
+        //     }
+        //     break;
+        // case "invisible":
+        //     movementStrategy.setStrategy(new RandomMovement());
+        //     nextPos = movementStrategy.executeMovement(this, game);
+        //     break;
+        // case "invincible":
+        //     movementStrategy.setStrategy(new FleeMovement());
+        //     nextPos = movementStrategy.executeMovement(this, game);
+        //     break;
+        // case "hostile":
+        //     // nextPos = map.dijkstraPathFind(getPosition(), player.getPosition(), this);
+        //     movementStrategy.setStrategy(new DijkstraMovement());
+        //     nextPos = movementStrategy.executeMovement(this, game);
+        //     break;
+        // default:
+        //     break;
+        // }
+
+        if (movementBehaviour.getType().equals("allied")) {
             boolean isAdjacentToPlayer = Position.isAdjacent(player.getPosition(), getPosition());
             if (wasAdjacentToPlayer && !isAdjacentToPlayer) {
                 nextPos = player.getPreviousDistinctPosition();
@@ -99,23 +136,11 @@ public class Mercenary extends Enemy implements Interactable, PotionListener {
                         : map.dijkstraPathFind(getPosition(), player.getPosition(), this);
                 wasAdjacentToPlayer = Position.isAdjacent(player.getPosition(), nextPos);
             }
-            break;
-        case "invisible":
-            movementStrategy.setStrategy(new RandomMovement());
-            nextPos = movementStrategy.executeMovement(this, game);
-            break;
-        case "invincible":
-            movementStrategy.setStrategy(new FleeMovement());
-            nextPos = movementStrategy.executeMovement(this, game);
-            break;
-        case "hostile":
-            // nextPos = map.dijkstraPathFind(getPosition(), player.getPosition(), this);
-            movementStrategy.setStrategy(new DijkstraMovement());
-            nextPos = movementStrategy.executeMovement(this, game);
-            break;
-        default:
-            break;
+        } else {
+            MoveStrategy movement = MOVE.get(movementBehaviour.getType());
+            nextPos = movement.move(this, game);
         }
+
         map.moveTo(this, nextPos);
     }
 

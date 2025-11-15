@@ -20,7 +20,7 @@ Therefore, I can use strategy patterns to do "move" in a lot of different ways a
 
 > iii. Using your chosen Design Pattern, refactor the code to remove the repetition.
 
-My refactoring: 
+My refactoring Version 1 (Oct 31): 
 | Strategy Interface  | MoveStrategy |
 | Contax class        | DoMovement   |
 | Concrete strategies | RandomMovement, DijkstraMovement, FleeMovement |
@@ -28,6 +28,12 @@ Step1: The context (DoMovement) holds a strategy. Each enemy object has a field 
 Step2: The enemy sets the desired strategy. Before moving, the enemy selects which algorithm (strategy) it wants to use. For example, based on potion effects or state.
 Step 3: The context delegates the call to the chosen strategy
 Step 4: The concrete strategy executes its algorithm. Depending on which strategy was set, one of the following move() implementations runs.
+
+★ My refactoring Version 2 ★ (Nov 15): 
+In my original movement design (Version 1), I implemented the Strategy Pattern using a dedicated context class (DoMovement) that held a MoveStrategy object. Although functional, this version created unnecessary indirection and violated the Open–Closed Principle, because adding or modifying a movement algorithm required editing both the context class and the enemy classes. In Version 2, I replaced the context class entirely with a static Map<String, MoveStrategy> that directly associates movement types (e.g. "random", "runAway", "hostile") with their corresponding strategy objects. Enemies now select the appropriate behaviour simply by changing a string key, and the map handles the creation of new movement strategy.
+
+Why Version 2 is better:
+My new movement system removes the extra context class and instead uses a static map to link movement types to strategy objects. Adding a new movement algorithm now only means putting a new entry in the map, which keeps the design open for extension. Overall, the new version is cleaner, easier to maintain, and keeps responsibilities clearer by letting strategies handle movement while enemies simply choose which one to use.
 
 ### b) Inheritance Design (6 marks)
 
@@ -135,21 +141,12 @@ This change modularises how entities respond to overlaps by introducing an Overl
 Previously, all entities inherited an onOverlap() method from the base Entity class, even when most of them didn’t need overlap behaviour. By moving this into an interface, only the entities that actually react to overlaps (e.g. Enemy, Switch, Portal, etc.) implement it — making the design cleaner, safer, and easier to extend. This enhances the design principle: Interface Segregation Principle since only classes that care about overlap events implement Overlap, keeping interfaces focused and minimal. Moreover, it strengthens Open–Closed Principle becasue if we want to add a new overlapping entity, we do not have to edit the base Entity class. Therefore, the system becomes easier to extend.
 
 [Merge Request 6](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/13)
+
 Open/Closed Principle (OCP) and Dependency Inversion Principle (DIP)
 Originall, I applied buff in BattleFacade by writing: 
     if (item instanceof Bow || item instanceof Shield || item instanceof Sword
         || item instanceof Potion)
-However, this list will increase every time a new battle item is added, violating OCP. Moreover, this means BattleFacade depends directly on the specific concrete classes, violating DIP. After design: 
-    for (InventoryBattle item : player.getBattleItemsList()) {
-        if (item != null && !(item instanceof Key)) {
-            playerBuff = item.applyBuff(playerBuff);
-            battleItems.add(item);
-            if (item instanceof Useable u) {
-                u.use(game);
-            }
-        }
-    }
-
+However, this list will increase every time a new battle item is added, violating OCP. Moreover, this means BattleFacade depends directly on the specific concrete classes, violating DIP. 
 
 ## Task 2) Evolution of Requirements 🔧
 
