@@ -16,6 +16,7 @@ import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.MercenaryBehaviors.BribeBehaviour;
 import dungeonmania.entities.enemies.MercenaryBehaviors.MindControlBehaviour;
 import dungeonmania.entities.enemies.MercenaryBehaviors.MovementBehaviour;
+import dungeonmania.map.DijkstraPathFinder;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
@@ -103,7 +104,7 @@ public class Mercenary extends Enemy implements Interactable, PotionListener {
             } else {
                 // If currently still adjacent, wait in place. Else pursue the player.
                 nextPos = isAdjacentToPlayer ? getPosition()
-                        : map.dijkstraPathFind(getPosition(), player.getPosition(), this);
+                        : DijkstraPathFinder.findNext(map, getPosition(), player.getPosition(), this);
                 wasAdjacentToPlayer = Position.isAdjacent(player.getPosition(), nextPos);
             }
         } else {

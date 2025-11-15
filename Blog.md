@@ -152,6 +152,10 @@ However, this list will increase every time a new battle item is added, violatin
 
 I improved the design of the spawning system by moving all spider and zombie spawning logic out of EntityFactory and into a dedicated helper class. Instead of letting the factory handle both entity creation and timed spawning behaviour, I now call Spawn.spawnSpider(...) and Spawn.spawnZombie(...) from the game loop. This reduces the responsibilities of EntityFactory, improves modularity, and aligns with SRP by keeping spawning logic separate from entity construction. I also updated the registration code so the game now registers these new spawn methods directly.
 
+[Merge Request 8]
+
+I moved the Dijkstra path-finding logic out of GameMap into a dedicated DijkstraPathFinder class to reduce the responsibilities of the map and separate concerns more cleanly. GameMap was previously handling both map state management and complex path-finding, making it large and hard to maintain. Extracting the algorithm into its own class gives GameMap a single clear purpose. This change follows the Single Responsibility Principle (SRP) and also improves Open–Closed Principle (OCP) because different path-finding strategies can now be introduced or replaced without modifying the map class.
+
 ## Task 2) Evolution of Requirements 🔧
 
 ### Sun Stone & More Buildables (20 marks)
