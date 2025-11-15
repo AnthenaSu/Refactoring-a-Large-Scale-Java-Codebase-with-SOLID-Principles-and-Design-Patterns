@@ -33,21 +33,10 @@ public class ZombieToast extends Enemy implements PotionListener {
     public void move(Game game) {
         Position nextPos = null;
         GameMap map = game.getMap();
-        // switch (movementType) {
-        // case "random":
-        //     movementStrategy.setStrategy(new RandomMovement());
-        //     break;
-        // case "runAway":
-        //     movementStrategy.setStrategy(new FleeMovement());
-        //     break;
-        // default:
-        //     break;
-        // }
         MoveStrategy movement = MOVE.get(movementType);
         nextPos = movement.move(this, game);
         // Position nextPos = movementStrategy.executeMovement(this, game);
         game.getMap().moveTo(this, nextPos);
-
     }
 
     @Override

@@ -4,8 +4,8 @@
 
 ### a) From DRY to Design Patterns (6 marks)
 
-[Links to your merge requests](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/1)
-
+[Links to your merge requests 1](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/1)
+[Links to your merge requests 2](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/18)
 > i. Look inside src/main/java/dungeonmania/entities/enemies. Where can you notice an instance of repeated code? Note down the particular offending lines/methods/fields.
 
 [Answer]
@@ -200,7 +200,6 @@ rather than asking the inventory:
 
 **Changes after review**
 1. I refactored the Mercenary class by separating its major behaviours into dedicated components, improving modularity. Originally, Mercenary handled bribing, mind control, and multiple movement modes within one class, giving it multiple responsibilities and making future extensions difficult. I introduced separate classes: BribeBehaviour, MindControlBehaviour, and MovementBehaviour in the file "MercenaryBehaviors". This reduces coupling and ensures each behaviour has a single responsibility, improving both SRP and OCP. The Mercenary class now acts as a coordinator rather than a God object. 
-
 
 **Test list**
 

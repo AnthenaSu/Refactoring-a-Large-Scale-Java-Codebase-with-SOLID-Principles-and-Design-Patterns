@@ -96,36 +96,6 @@ public class Mercenary extends Enemy implements Interactable, PotionListener {
                 movementBehaviour.setType("hostile");
             }
         }
-
-        // switch (movementBehaviour.getType()) {
-        // case "allied":
-        //     boolean isAdjacentToPlayer = Position.isAdjacent(player.getPosition(), getPosition());
-        //     if (wasAdjacentToPlayer && !isAdjacentToPlayer) {
-        //         nextPos = player.getPreviousDistinctPosition();
-        //     } else {
-        //         // If currently still adjacent, wait in place. Else pursue the player.
-        //         nextPos = isAdjacentToPlayer ? getPosition()
-        //                 : map.dijkstraPathFind(getPosition(), player.getPosition(), this);
-        //         wasAdjacentToPlayer = Position.isAdjacent(player.getPosition(), nextPos);
-        //     }
-        //     break;
-        // case "invisible":
-        //     movementStrategy.setStrategy(new RandomMovement());
-        //     nextPos = movementStrategy.executeMovement(this, game);
-        //     break;
-        // case "invincible":
-        //     movementStrategy.setStrategy(new FleeMovement());
-        //     nextPos = movementStrategy.executeMovement(this, game);
-        //     break;
-        // case "hostile":
-        //     // nextPos = map.dijkstraPathFind(getPosition(), player.getPosition(), this);
-        //     movementStrategy.setStrategy(new DijkstraMovement());
-        //     nextPos = movementStrategy.executeMovement(this, game);
-        //     break;
-        // default:
-        //     break;
-        // }
-
         if (movementBehaviour.getType().equals("allied")) {
             boolean isAdjacentToPlayer = Position.isAdjacent(player.getPosition(), getPosition());
             if (wasAdjacentToPlayer && !isAdjacentToPlayer) {
