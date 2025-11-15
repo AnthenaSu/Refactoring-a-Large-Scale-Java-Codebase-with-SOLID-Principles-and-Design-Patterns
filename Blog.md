@@ -152,7 +152,7 @@ However, this list will increase every time a new battle item is added, violatin
 
 I improved the design of the spawning system by moving all spider and zombie spawning logic out of EntityFactory and into a dedicated helper class. Instead of letting the factory handle both entity creation and timed spawning behaviour, I now call Spawn.spawnSpider(...) and Spawn.spawnZombie(...) from the game loop. This reduces the responsibilities of EntityFactory, improves modularity, and aligns with SRP by keeping spawning logic separate from entity construction. I also updated the registration code so the game now registers these new spawn methods directly.
 
-[Merge Request 8]
+[Merge Request 8](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/21)
 
 I moved the Dijkstra path-finding logic out of GameMap into a dedicated DijkstraPathFinder class to reduce the responsibilities of the map and separate concerns more cleanly. GameMap was previously handling both map state management and complex path-finding, making it large and hard to maintain. Extracting the algorithm into its own class gives GameMap a single clear purpose. This change follows the Single Responsibility Principle (SRP) and also improves Open–Closed Principle (OCP) because different path-finding strategies can now be introduced or replaced without modifying the map class.
 
@@ -162,8 +162,13 @@ I moved the Dijkstra path-finding logic out of GameMap into a dedicated Dijkstra
 [Links to your merge requests 1](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/9)
 [Links to your merge requests 2](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/10)
 [Links to your merge requests 3](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/12)
+
 **Assumptions**
-[Any assumptions made]
+- Sun Stone is not consumed when opening doors. The specification states that Sun Stones can open any door but does not explicitly say whether they are consumed. I assume they behave like a permanent key substitute and are never removed from the inventory when opening doors.
+- Sun Stone cannot bribe mercenaries under any circumstances. The spec lists treasure as a bribe resource but explicitly states that Sun Stone cannot be used to bribe. I assume this applies regardless of bribe radius, mind control behaviour, or other effects.
+- Sceptre mind control overrides bribe radius and interactability checks. The spec says mind control works “from any distance,” so I assume no proximity checks are applied.
+- Mind-controlled mercenaries revert to hostile automatically when duration expires, without requiring extra calls or interactions.
+- Midnight Armour provides permanent stat bonuses and is never consumed. The spec says it “lasts forever,” so I assume it behaves like a permanent passive buff and does not implement durability-based removal.
 
 **Design**
 Design Decisions: 
@@ -210,6 +215,7 @@ rather than asking the inventory:
 
 2. In my original movement design, I implemented the Strategy Pattern using a dedicated context class (DoMovement) that held a MoveStrategy object. Although functional, this version created unnecessary indirection and violated the Open–Closed Principle, because adding or modifying a movement algorithm required editing both the context class and the enemy classes. In Version 2, I replaced the context class entirely with a static Map<String, MoveStrategy> that directly associates movement types (e.g. "random", "runAway", "hostile") with their corresponding strategy objects. Enemies now select the appropriate behaviour simply by changing a string key, and the map handles the creation of new movement strategy.
 
+3. Merge requests 6-8 in Task 1 Part D were actually added recently (after creating new entities).
 
 **Test list**
 
