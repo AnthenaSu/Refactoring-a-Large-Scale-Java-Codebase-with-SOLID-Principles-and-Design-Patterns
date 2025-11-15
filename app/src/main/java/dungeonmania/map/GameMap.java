@@ -94,13 +94,6 @@ public class GameMap {
      * Register each zombie toast spawner to attempt to spawn an enemy each tick as well as initialise the spider
      * spawning mechanic.
      */
-    // private void initRegisterSpawners() {
-    //     List<ZombieToastSpawner> zts = getEntities(ZombieToastSpawner.class);
-    //     zts.forEach(e -> {
-    //         game.register(() -> e.spawn(game), Game.AI_MOVEMENT, e.getId());
-    //     });
-    //     game.register(() -> game.getEntityFactory().spawnSpider(game), Game.AI_MOVEMENT, "spawnSpiders");
-    // }
     private void initRegisterSpawners() {
         List<ZombieToastSpawner> zts = getEntities(ZombieToastSpawner.class);
         zts.forEach(e -> {

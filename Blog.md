@@ -148,7 +148,8 @@ Originall, I applied buff in BattleFacade by writing:
         || item instanceof Potion)
 However, this list will increase every time a new battle item is added, violating OCP. Moreover, this means BattleFacade depends directly on the specific concrete classes, violating DIP. 
 
-[Merge Request 7]
+[Merge Request 7](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/20)
+
 I improved the design of the spawning system by moving all spider and zombie spawning logic out of EntityFactory and into a dedicated helper class. Instead of letting the factory handle both entity creation and timed spawning behaviour, I now call Spawn.spawnSpider(...) and Spawn.spawnZombie(...) from the game loop. This reduces the responsibilities of EntityFactory, improves modularity, and aligns with SRP by keeping spawning logic separate from entity construction. I also updated the registration code so the game now registers these new spawn methods directly.
 
 ## Task 2) Evolution of Requirements 🔧
