@@ -22,7 +22,7 @@ Therefore, I can use strategy patterns to do "move" in a lot of different ways a
 
 My refactoring Version 1 (Oct 31): 
 | Strategy Interface  | MoveStrategy |
-| Contax class        | DoMovement   |
+| Contex class        | DoMovement   |
 | Concrete strategies | RandomMovement, DijkstraMovement, FleeMovement |
 Step1: The context (DoMovement) holds a strategy. Each enemy object has a field of type DoMovement. This class doesn’t know how to move — it only knows that it has a MoveStrategy object to handle movement.
 Step2: The enemy sets the desired strategy. Before moving, the enemy selects which algorithm (strategy) it wants to use. For example, based on potion effects or state.
@@ -148,6 +148,9 @@ Originall, I applied buff in BattleFacade by writing:
         || item instanceof Potion)
 However, this list will increase every time a new battle item is added, violating OCP. Moreover, this means BattleFacade depends directly on the specific concrete classes, violating DIP. 
 
+[Merge Request 7]
+I improved the design of the spawning system by moving all spider and zombie spawning logic out of EntityFactory and into a dedicated helper class. Instead of letting the factory handle both entity creation and timed spawning behaviour, I now call Spawn.spawnSpider(...) and Spawn.spawnZombie(...) from the game loop. This reduces the responsibilities of EntityFactory, improves modularity, and aligns with SRP by keeping spawning logic separate from entity construction. I also updated the registration code so the game now registers these new spawn methods directly.
+
 ## Task 2) Evolution of Requirements 🔧
 
 ### Sun Stone & More Buildables (20 marks)
@@ -197,14 +200,54 @@ rather than asking the inventory:
         return inventory.getBuildables();
     }
 
-
 **Changes after review**
 1. I refactored the Mercenary class by separating its major behaviours into dedicated components, improving modularity. Originally, Mercenary handled bribing, mind control, and multiple movement modes within one class, giving it multiple responsibilities and making future extensions difficult. I introduced separate classes: BribeBehaviour, MindControlBehaviour, and MovementBehaviour in the file "MercenaryBehaviors". This reduces coupling and ensures each behaviour has a single responsibility, improving both SRP and OCP. The Mercenary class now acts as a coordinator rather than a God object. 
 
+2. In my original movement design, I implemented the Strategy Pattern using a dedicated context class (DoMovement) that held a MoveStrategy object. Although functional, this version created unnecessary indirection and violated the Open–Closed Principle, because adding or modifying a movement algorithm required editing both the context class and the enemy classes. In Version 2, I replaced the context class entirely with a static Map<String, MoveStrategy> that directly associates movement types (e.g. "random", "runAway", "hostile") with their corresponding strategy objects. Enemies now select the appropriate behaviour simply by changing a string key, and the map handles the creation of new movement strategy.
+
+
 **Test list**
 
-[Test List]
+@Tag("sunstone-1")
+@DisplayName("Test SunStone can open any door and is not consumed")
+
+@Tag("sunstone-2")
+@DisplayName("Test SunStone counts towards treasure goal")
+
+@Tag("sunstone-3")
+@DisplayName("Test SunStone cannot be used to bribe mercenaries")
+
+@Tag("sunstone-4")
+@DisplayName("Test SunStone can substitute for treasure/key when crafting a shield")
+
+@Tag("armour-1")
+@DisplayName("Midnight Armour get functions")
+
+@Tag("armour-2")
+@DisplayName("Can build midnight armour when no zombies exist")
+
+@Tag("armour-3")
+@DisplayName("Cannot build midnight armour when zombies exist")
+
+@Tag("armour-4")
+@DisplayName("Cannot build without required materials")
+
+@Tag("armour-5")
+@DisplayName("Midnight Armour provides attack & defence boosts in battle")
+
+@Tag("sceptre-1")
+@DisplayName("Test a Sceptre can be crafted from (wood OR 2 arrows) + (key OR treasure) + sun stone")
+
+@Tag("sceptre-2")
+@DisplayName("Test sceptre allows mind control of a mercenary from any distance")
+
+@Tag("sceptre-3")
+@DisplayName("Test mercenary interactability flips correctly after mind control duration")
+
+@Tag("sceptre-4")
+@DisplayName("Test sceptre mind control does not consume treasure or depend on bribe radius")
+
+@Tag("sceptre-5")
+@DisplayName("Test mind control lasts for configured duration then expires")
 
 **Other notes**
-
-[Any other notes]

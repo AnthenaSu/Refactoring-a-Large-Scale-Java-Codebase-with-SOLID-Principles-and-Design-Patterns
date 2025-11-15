@@ -128,15 +128,13 @@ public class Mercenary extends Enemy implements Interactable, PotionListener {
 
     @Override
     public BattleStatistics getBattleStatistics() {
-        if (!allied)
-            return super.getBattleStatistics();
+        if (!allied) return super.getBattleStatistics();
         return new BattleStatistics(0, allyAttack, allyDefence, 1, 1);
     }
 
     @Override
     public void notifyPotion(Potion potion) {
-        if (allied)
-            return;
+        if (allied) return;
 
         if (potion instanceof InvisibilityPotion)
             movementBehaviour.setType("invisible");
@@ -146,8 +144,7 @@ public class Mercenary extends Enemy implements Interactable, PotionListener {
 
     @Override
     public void notifyNoPotion() {
-        if (allied)
-            return;
+        if (allied) return;
         movementBehaviour.setType("hostile");
     }
 

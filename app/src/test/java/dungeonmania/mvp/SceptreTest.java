@@ -20,7 +20,7 @@ import dungeonmania.util.Direction;
 public class SceptreTest {
 
     @Test
-    @Tag("13-1")
+    @Tag("sceptre-1")
     @DisplayName("Test a Sceptre can be crafted from (wood OR 2 arrows) + (key OR treasure) + sun stone")
     public void craftSceptre() throws IllegalArgumentException, InvalidActionException {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -45,7 +45,7 @@ public class SceptreTest {
     }
 
     @Test
-    @Tag("13-2")
+    @Tag("sceptre-2")
     @DisplayName("Test sceptre allows mind control of a mercenary from any distance")
     public void mindControlDistance() throws IllegalArgumentException, InvalidActionException {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -68,7 +68,7 @@ public class SceptreTest {
     }
 
     @Test
-    @Tag("13-5")
+    @Tag("sceptre-5")
     @DisplayName("Test mind control lasts for configured duration then expires")
     public void mindControlDuration() throws InvalidActionException {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -99,7 +99,7 @@ public class SceptreTest {
     }
 
     @Test
-    @Tag("13-3")
+    @Tag("sceptre-3")
     @DisplayName("Test mercenary interactability flips correctly after mind control duration")
     public void testMindControlInteractableLifecycle() throws InvalidActionException {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -145,7 +145,7 @@ public class SceptreTest {
     }
 
     @Test
-    @Tag("13-4")
+    @Tag("sceptre-4")
     @DisplayName("Test sceptre mind control does not consume treasure or depend on bribe radius")
     public void mindControlIgnoresBribeRules() throws IllegalArgumentException, InvalidActionException {
         DungeonManiaController dmc = new DungeonManiaController();

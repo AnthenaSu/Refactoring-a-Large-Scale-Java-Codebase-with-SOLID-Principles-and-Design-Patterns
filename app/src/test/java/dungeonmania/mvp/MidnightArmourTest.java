@@ -23,7 +23,7 @@ import dungeonmania.util.Direction;
 public class MidnightArmourTest {
 
     @Test
-    @Tag("20")
+    @Tag("armour-1")
     @DisplayName("Can build midnight armour when no zombies exist")
     public void testBuildMidnightArmourNoZombies() throws InvalidActionException {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -44,7 +44,7 @@ public class MidnightArmourTest {
     }
 
     @Test
-    @Tag("21")
+    @Tag("armour-2")
     @DisplayName("Cannot build midnight armour when zombies exist")
     public void testBuildMidnightArmourWithZombies() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -70,7 +70,7 @@ public class MidnightArmourTest {
     }
 
     @Test
-    @Tag("19")
+    @Tag("armour-3")
     @DisplayName("Midnight Armour get functions")
     public void testDurabilityAlwaysOne() {
         MidnightArmour m = new MidnightArmour(3, 4);
@@ -79,7 +79,7 @@ public class MidnightArmourTest {
     }
 
     @Test
-    @Tag("22")
+    @Tag("armour-4")
     @DisplayName("Cannot build without required materials")
     public void testBuildMidnightArmourMissingItems() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -101,7 +101,7 @@ public class MidnightArmourTest {
 
 
     @Test
-    @Tag("23")
+    @Tag("armour-5")
     @DisplayName("Midnight Armour provides attack & defence boosts in battle")
     public void testMidnightArmourBattleEffect() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -126,8 +126,4 @@ public class MidnightArmourTest {
         assertEquals(2.8, -round.getDeltaEnemyHealth());
         assertEquals(0.2, -round.getDeltaCharacterHealth());
     }
-
-
-
-
 }

@@ -14,6 +14,7 @@ import dungeonmania.entities.OverLap;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.Portal;
 import dungeonmania.entities.PotionListener;
+import dungeonmania.entities.Spawn;
 import dungeonmania.entities.Switch;
 import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.enemies.Enemy;
@@ -93,12 +94,28 @@ public class GameMap {
      * Register each zombie toast spawner to attempt to spawn an enemy each tick as well as initialise the spider
      * spawning mechanic.
      */
+    // private void initRegisterSpawners() {
+    //     List<ZombieToastSpawner> zts = getEntities(ZombieToastSpawner.class);
+    //     zts.forEach(e -> {
+    //         game.register(() -> e.spawn(game), Game.AI_MOVEMENT, e.getId());
+    //     });
+    //     game.register(() -> game.getEntityFactory().spawnSpider(game), Game.AI_MOVEMENT, "spawnSpiders");
+    // }
     private void initRegisterSpawners() {
         List<ZombieToastSpawner> zts = getEntities(ZombieToastSpawner.class);
         zts.forEach(e -> {
             game.register(() -> e.spawn(game), Game.AI_MOVEMENT, e.getId());
         });
-        game.register(() -> game.getEntityFactory().spawnSpider(game), Game.AI_MOVEMENT, "spawnSpiders");
+
+        game.register(
+            () -> Spawn.spawnSpider(
+                    game,
+                    game.getEntityFactory().getConfig(),
+                    game.getEntityFactory().getRandomGenerator()
+            ),
+            Game.AI_MOVEMENT,
+            "spawnSpiders"
+        );
     }
 
     /** Initialise and register "potion listeners" to be responsive to player potion updates */
