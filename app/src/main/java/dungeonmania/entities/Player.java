@@ -16,7 +16,6 @@ import dungeonmania.entities.collectables.potions.InvisibilityPotion;
 import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.Enemy;
 import dungeonmania.entities.enemies.Mercenary;
-import dungeonmania.entities.inventory.BuildInventoryChecker;
 import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.entities.inventory.InventoryBattle;
 import dungeonmania.entities.inventory.InventoryItem;
@@ -71,15 +70,12 @@ public class Player extends Entity implements Battleable, OverLap {
 
     /** Returns a list of things that can be built by the player currently */
     public List<String> getBuildables() {
-        // return inventory.getBuildables();
-        return BuildInventoryChecker.getBuildables(inventory);
+        return inventory.getBuildables();
     }
 
     /** Called when the player chooses to craft something. */
     public boolean build(String entity, EntityFactory factory) {
-        // InventoryItem item = inventory.checkBuildCriteria(this, true, entity.equals("shield"), factory);
-        InventoryItem item = BuildInventoryChecker.checkBuildCriteria(this, true,
-            entity.equals("shield"), factory, inventory);
+        InventoryItem item = inventory.checkBuildCriteria(this, true, entity.equals("shield"), factory);
         if (item == null)
             return false;
         return inventory.add(item);

@@ -189,20 +189,9 @@ Adding Midnight Armour (or furture new battle items) shouldn’t require modifyi
 
 4. I made SunStone extend Treasure because the spec defines it as a special form of treasure. By inheriting from Treasure, the Sun Stone automatically counts toward the treasure goal and behaves like other collectible valuables, without duplicating code. The Sun Stone then overrides only the behaviours that differ from normal treasure. For example, it can open any door, cannot bribe mercenaries, and is only consumed when used as a listed crafting ingredient. This follows the Liskov Substitution Principle (LSP), since a SunStone can be safely substituted wherever a Treasure is expected, while still adding its own specialised functionality.
 
-5. By moving all crafting logic out of Inventory and into a dedicated helper class BuildInventoryChecker, I separated the responsibilities of storing items and evaluating crafting rules. This change improves cohesion because Inventory now focuses solely on managing item collections, while all build-related logic lives in a single component. This shows Single Responsibility Principle (SRP) by preventing the Inventory from knowing or caring about game-specific crafting rules, and it supports Open–Closed Principle (OCP) because future buildables or recipe changes can be added to BuildInventoryChecker without modifying inventory internals. 
-
-The Player class now retrieves buildable items through BuildInventoryChecker:
-    public List<String> getBuildables() {
-        return BuildInventoryChecker.getBuildables(inventory);
-    }
-rather than asking the inventory:
-    public List<String> getBuildables() {
-        return inventory.getBuildables();
-    }
-
 
 **Changes after review**
-1. I refactored the Mercenary class by separating its major behaviours into dedicated components, improving modularity. Originally, Mercenary handled bribing, mind control, and multiple movement modes within one class, giving it multiple responsibilities and making future extensions difficult. I introduced separate classes: BribeBehaviour, MindControlBehaviour, and MovementBehaviour in the file "MercenaryBehaviors". This reduces coupling and ensures each behaviour has a single responsibility, improving both SRP and OCP. The Mercenary class now acts as a coordinator rather than a God object. 
+1. I refactored the Mercenary class by separating its major behaviours into dedicated components, improving modularity. Originally, Mercenary handled bribing, mind control, and multiple movement modes within one class, giving it multiple responsibilities and making future extensions difficult. I introduced separate classes: BribeBehaviour, MindControlBehaviour, and MovementBehaviour. This reduces coupling and ensures each behaviour has a single responsibility, improving both SRP and OCP. The Mercenary class now acts as a coordinator rather than a God object. 
 
 
 **Test list**
