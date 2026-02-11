@@ -4,8 +4,8 @@
 
 ### a) From DRY to Design Patterns (6 marks)
 
-[Links to your merge requests 1](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/1)
-[Links to your merge requests 2](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/18)
+[Links to your merge requests](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/1)
+
 > i. Look inside src/main/java/dungeonmania/entities/enemies. Where can you notice an instance of repeated code? Note down the particular offending lines/methods/fields.
 
 [Answer]
@@ -20,20 +20,14 @@ Therefore, I can use strategy patterns to do "move" in a lot of different ways a
 
 > iii. Using your chosen Design Pattern, refactor the code to remove the repetition.
 
-My refactoring Version 1 (Oct 31): 
+My refactoring: 
 | Strategy Interface  | MoveStrategy |
-| Contex class        | DoMovement   |
+| Contax class        | DoMovement   |
 | Concrete strategies | RandomMovement, DijkstraMovement, FleeMovement |
 Step1: The context (DoMovement) holds a strategy. Each enemy object has a field of type DoMovement. This class doesn’t know how to move — it only knows that it has a MoveStrategy object to handle movement.
 Step2: The enemy sets the desired strategy. Before moving, the enemy selects which algorithm (strategy) it wants to use. For example, based on potion effects or state.
 Step 3: The context delegates the call to the chosen strategy
 Step 4: The concrete strategy executes its algorithm. Depending on which strategy was set, one of the following move() implementations runs.
-
-★ My refactoring Version 2 ★ (Nov 15): 
-In my original movement design (Version 1), I implemented the Strategy Pattern using a dedicated context class (DoMovement) that held a MoveStrategy object. Although functional, this version created unnecessary indirection and violated the Open–Closed Principle, because adding or modifying a movement algorithm required editing both the context class and the enemy classes. In Version 2, I replaced the context class entirely with a static Map<String, MoveStrategy> that directly associates movement types (e.g. "random", "runAway", "hostile") with their corresponding strategy objects. Enemies now select the appropriate behaviour simply by changing a string key, and the map handles the creation of new movement strategy.
-
-Why Version 2 is better:
-My new movement system removes the extra context class and instead uses a static map to link movement types to strategy objects. Adding a new movement algorithm now only means putting a new entry in the map, which keeps the design open for extension. Overall, the new version is cleaner, easier to maintain, and keeps responsibilities clearer by letting strategies handle movement while enemies simply choose which one to use.
 
 ### b) Inheritance Design (6 marks)
 
@@ -148,27 +142,14 @@ Originall, I applied buff in BattleFacade by writing:
         || item instanceof Potion)
 However, this list will increase every time a new battle item is added, violating OCP. Moreover, this means BattleFacade depends directly on the specific concrete classes, violating DIP. 
 
-[Merge Request 7](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/20)
-
-I improved the design of the spawning system by moving all spider and zombie spawning logic out of EntityFactory and into a dedicated helper class. Instead of letting the factory handle both entity creation and timed spawning behaviour, I now call Spawn.spawnSpider(...) and Spawn.spawnZombie(...) from the game loop. This reduces the responsibilities of EntityFactory, improves modularity, and aligns with SRP by keeping spawning logic separate from entity construction. I also updated the registration code so the game now registers these new spawn methods directly.
-
-[Merge Request 8](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/21)
-
-I moved the Dijkstra path-finding logic out of GameMap into a dedicated DijkstraPathFinder class to reduce the responsibilities of the map and separate concerns more cleanly. GameMap was previously handling both map state management and complex path-finding, making it large and hard to maintain. Extracting the algorithm into its own class gives GameMap a single clear purpose. This change follows the Single Responsibility Principle (SRP) and also improves Open–Closed Principle (OCP) because different path-finding strategies can now be introduced or replaced without modifying the map class.
-
 ## Task 2) Evolution of Requirements 🔧
 
 ### Sun Stone & More Buildables (20 marks)
 [Links to your merge requests 1](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/9)
 [Links to your merge requests 2](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/10)
 [Links to your merge requests 3](https://nw-syd-gitlab.cseunsw.tech/COMP2511/25T3/students/z5640267/assignment-ii/-/merge_requests/12)
-
 **Assumptions**
-- Sun Stone is not consumed when opening doors. The specification states that Sun Stones can open any door but does not explicitly say whether they are consumed. I assume they behave like a permanent key substitute and are never removed from the inventory when opening doors.
-- Sun Stone cannot bribe mercenaries under any circumstances. The spec lists treasure as a bribe resource but explicitly states that Sun Stone cannot be used to bribe. I assume this applies regardless of bribe radius, mind control behaviour, or other effects.
-- Sceptre mind control overrides bribe radius and interactability checks. The spec says mind control works “from any distance,” so I assume no proximity checks are applied.
-- Mind-controlled mercenaries revert to hostile automatically when duration expires, without requiring extra calls or interactions.
-- Midnight Armour provides permanent stat bonuses and is never consumed. The spec says it “lasts forever,” so I assume it behaves like a permanent passive buff and does not implement durability-based removal.
+[Any assumptions made]
 
 **Design**
 Design Decisions: 
@@ -210,55 +191,15 @@ rather than asking the inventory:
         return inventory.getBuildables();
     }
 
+
 **Changes after review**
 1. I refactored the Mercenary class by separating its major behaviours into dedicated components, improving modularity. Originally, Mercenary handled bribing, mind control, and multiple movement modes within one class, giving it multiple responsibilities and making future extensions difficult. I introduced separate classes: BribeBehaviour, MindControlBehaviour, and MovementBehaviour in the file "MercenaryBehaviors". This reduces coupling and ensures each behaviour has a single responsibility, improving both SRP and OCP. The Mercenary class now acts as a coordinator rather than a God object. 
 
-2. In my original movement design, I implemented the Strategy Pattern using a dedicated context class (DoMovement) that held a MoveStrategy object. Although functional, this version created unnecessary indirection and violated the Open–Closed Principle, because adding or modifying a movement algorithm required editing both the context class and the enemy classes. In Version 2, I replaced the context class entirely with a static Map<String, MoveStrategy> that directly associates movement types (e.g. "random", "runAway", "hostile") with their corresponding strategy objects. Enemies now select the appropriate behaviour simply by changing a string key, and the map handles the creation of new movement strategy.
-
-3. Merge requests 6-8 in Task 1 Part D were actually added recently (after creating new entities).
 
 **Test list**
 
-@Tag("sunstone-1")
-@DisplayName("Test SunStone can open any door and is not consumed")
-
-@Tag("sunstone-2")
-@DisplayName("Test SunStone counts towards treasure goal")
-
-@Tag("sunstone-3")
-@DisplayName("Test SunStone cannot be used to bribe mercenaries")
-
-@Tag("sunstone-4")
-@DisplayName("Test SunStone can substitute for treasure/key when crafting a shield")
-
-@Tag("armour-1")
-@DisplayName("Midnight Armour get functions")
-
-@Tag("armour-2")
-@DisplayName("Can build midnight armour when no zombies exist")
-
-@Tag("armour-3")
-@DisplayName("Cannot build midnight armour when zombies exist")
-
-@Tag("armour-4")
-@DisplayName("Cannot build without required materials")
-
-@Tag("armour-5")
-@DisplayName("Midnight Armour provides attack & defence boosts in battle")
-
-@Tag("sceptre-1")
-@DisplayName("Test a Sceptre can be crafted from (wood OR 2 arrows) + (key OR treasure) + sun stone")
-
-@Tag("sceptre-2")
-@DisplayName("Test sceptre allows mind control of a mercenary from any distance")
-
-@Tag("sceptre-3")
-@DisplayName("Test mercenary interactability flips correctly after mind control duration")
-
-@Tag("sceptre-4")
-@DisplayName("Test sceptre mind control does not consume treasure or depend on bribe radius")
-
-@Tag("sceptre-5")
-@DisplayName("Test mind control lasts for configured duration then expires")
+[Test List]
 
 **Other notes**
+
+[Any other notes]
