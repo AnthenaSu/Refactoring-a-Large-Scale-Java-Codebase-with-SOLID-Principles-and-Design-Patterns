@@ -1,4 +1,4 @@
-# Large-Scale-Refactoring-of-a-Java-Codebase-Applying-SOLID-Principles-and-Design-Patterns
+# Large Scale Refactoring of a Java Codebase Applying SOLID Principles and Design Patterns
 This project focused on analysing &amp; refactoring a large Java game codebase using OOP principles to improve maintainability, extensibility, and design quality. It involved identifying design smells, fixing flawed inheritance structures, and applying appropriate object-oriented design patterns, while keeping the system fully functional and CI-clean.
 
 
